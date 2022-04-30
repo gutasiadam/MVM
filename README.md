@@ -23,4 +23,28 @@ Demonstrálja a működést külön modulként fordított tesztprogrammal!  A me
 
  - [gtest_lite](https://git.ik.bme.hu/Prog2/ell_feladat/CppMonoton/blob/master/gtest_lite.h)
  - [memtrace](https://git.ik.bme.hu/Prog2/ell_feladat/Nem_OO/blob/master/memtrace.h)
-# MVM
+
+
+# Tesztadatok
+## Clientdata.txt
+
+Az ügyfelek sample adatbázisban a következő mezők találhatóak tabulátorral elválasztva, ebben a sorrendben:
+
+**ID, Keresztnév, Vezetéknév, Adószám, Város, Utca, Házszám, (lakásszám), telefonszám, e-mail, ügyfél típusa, születési év, hónap, nap, fázisok száma, főbiztosíték áramerőssége (A).
+
+## Invoices_archived.txt
+
+Ez a fájl tartalmazza a már teljesített számlákhoz kapcsolódó adatokat, ezzel biztosítva ezen adatok perzisztenciáját.
+
+Adatmezői a következők:
+**ID**(Ügyfél azonosítója), **consumptionAmt** (fogyasztás mennyiságe), **toBePaid** (fizetendő).
+
+## Tariffs.txt
+
+Ez a fájl tarifákat tartalmaz, melyek alapján a rendszer a díjakat tudja számolni. Ezen díjak több változótól is függenek, mint pldául a fázisok számától, az ügyfél típusától, és a főbiztosíték erősségétől.
+
+### Figyelmeztetés
+
+! A tesztadatok véletlenszerű névgenerátor oldalak segítségével, mint például [ez](https://www.random-name-generator.com/hungary?gender=&n=10&s=57094) lettek létrehozva. Esetleg egyezés véletlen történt. Amennyiben a neve szerepel a listán és változtatást szeretne kérni, kérem, keressen fel!
+
+! Az adószámok egy egyszerű random szám generátorral lettek elkészítve, esetleges egyezés a véletlen következtében történt.

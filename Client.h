@@ -11,6 +11,8 @@
 #include "Date.h"
 #include "string.h"
 #include "Client.h"
+#include "Invoice.h"
+#include <regex> // E-mail és telefonszám validálására.
 
 class Client{
     private:
@@ -23,16 +25,73 @@ class Client{
         bool type;
         int taxNumber;
 
+        unsigned short int phases;
+        unsigned short int strength;
+
+        Consumption_announcement* announcement;
+
         unsigned int electricMeter_last;
         double balance;
-        //Array<Invoice> archivedInvoices;
-        //Array<Invoice> pendingInvoices;
+
+        Array<Invoice> archivedInvoices; // Archivált számlák
+        Array<Invoice> pendingInvoices; // Befizetésre váró számlák
     public:
         Client(String N, Date b, Address res, String m, 
         String em, int taxN, bool type): Name(N), born(b), resAddress(res), 
         mobile(m), e_mail(em), taxNumber(taxN){
-            //validate e-mail, mobileNum?
+            //e-mail, telefonszám validálása, majd beírás..
+            //
         }
+        Client();
+
+        void addFunds(double moneyVal){
+            // Összeget ír jóvá az ügyfél számláján.
+        };
+        double getBalance() const{
+            // Lekérdezi az ügyfél egyenlegét.
+        };
+        int getId() const{
+            // Lekérdezi az Ügyfél azonosítóját.
+        };
+        int getPhoneNumber() const{
+            // lekérdezi az ügyfél telefonszámát.
+        };
+        Date& getDate() const{
+            //  Lekérdezi az ügyfél születési dátumát.
+        };
+        String& getName() const{
+            // Lekérdezi az ügyfél nevét.
+        };
+
+        bool getType() const{
+            // Visszaadja az ügyfél típusát 
+            // (magánszemély/vállalati)
+        };
+        
+        int getTN() const{
+            // Lekérdezi az ügyfél/vállalat
+            // adóazonosítóját.
+        };
+        int getElectricMeterVal() const{
+            // Lekérdezi a villanyóra azon állását,
+            // amediig be van fizetve
+        };
+
+        void pay_Pending_Invoices(){
+            // Egyenleg hozzáadása után egyből lefut
+            // Megpróbálja befizetni a befizetésre váró számlákat.
+
+            // Visszaadja, hány darab számla vár még befizetésre.
+            // (lényegében a pendingInvoices új hosszát.)
+        }
+
+        protected:
+            void modify_electricMeter(unsigned int amt){
+            // befizetés után módosítja a villanyóra azon
+            // állását, ameddig be van fizetve
+            // (electricMeter_last)
+            }
+
 };
 
 /// Globális függvények:

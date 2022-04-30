@@ -1,1 +1,4 @@
-A client osztály header még félkész, először kellenek a többi fájlok hozzá.
+- A többi alap sample adatmező felvitele (Client: utolsó bejegyzett adat, egyenleg), többi fájl létrehozása
+- Controller
+	- Controller Destruktorra íródjanak ki a fájlok a txt-kbe
+	- Controller Konstruktorral töltődjenek be a fájlok az Arrayeikbe.

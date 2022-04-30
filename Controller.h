@@ -24,5 +24,5 @@ class Controller {
         Client& getClient(String& name);
 
         ~Controller();
-}
+};
 #endif
