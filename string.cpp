@@ -22,8 +22,8 @@
 #include <iostream>             // Kiíratáshoz
 #include <cstring>              // Sztringműveletekhez
 
-#include "memtrace.h"           // a standard headerek után kell lennie
-#include "string5.h"
+//#include "memtrace.h"           // a standard headerek után kell lennie
+//#include "string5.h"
 
 
 /// Konstruktorok: egy char karakterből (createString)

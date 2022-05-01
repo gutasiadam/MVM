@@ -6,7 +6,7 @@
  * Ez a fájl tartalmazza az Array sablont.
  */
 
-template <typename T>
+template <class T>
 class Array{
     size_t len;
     T* elements;
@@ -45,7 +45,7 @@ class Array{
 
         template<class FuncType>
         void traverse(FuncType func){
-            for(size_t i=0;i<db;i++){
+            for(size_t i=0;i<len;i++){
                 func(elements[i]);
             }
         }

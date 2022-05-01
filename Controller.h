@@ -14,7 +14,7 @@ class Controller {
         Array<Client> clients;
         Tariffs tariffs;
     public:
-        Controller();
+        Controller(){}; //Controller(FILE* clientDat, FILE* invoiceDat);
         
         void create_invoices();
         void create_invoice();
@@ -23,6 +23,6 @@ class Controller {
         Client& getClient(int id);
         Client& getClient(String& name);
 
-        ~Controller();
+        //~Controller();
 };
 #endif

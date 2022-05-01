@@ -14,7 +14,7 @@ class Tariffs{
         static double corporate;
         static double usage_fee;
     public:
-        Tariffs();
+        Tariffs() {};
 
         double getVAT();
         double getResidental();

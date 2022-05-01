@@ -14,6 +14,7 @@
 using std::cout;
 using std::endl;
 int main() {
+    std::cout << "Begin";
    /*
      TEST(TeszEsetNeve, TesztNeve)
      EXPECT_EQ(0, f(0));

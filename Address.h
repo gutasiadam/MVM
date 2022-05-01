@@ -16,6 +16,7 @@ class Address{
         int house;
         int apartment;
     public:
+        Address() {};
         Address(String t,String str,int h,int apt=0): town(t), street(str), house(h), apartment(apt){};
         String& getStreet();
         String& getTown();

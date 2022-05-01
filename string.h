@@ -17,8 +17,7 @@ class String {
     char *pData;    ///< pointer az adatra
     size_t len;     ///< hossz lezáró nulla nélkül
 public:
-
-
+    String() {};
     /// Hossz lekérdezése.
     /// @return Sztring hossza
 	size_t size() const { return len; }
@@ -39,7 +38,7 @@ public:
     /// Konstruktor egy nullával lezárt char sorozatból
     /// Ez a deafault is!
     /// @param p - pointer egy C sztringre
-    String(const char *p = "");
+    String(const char *p); // = ""
 
     /// Másoló konstruktor
     /// @param s1 - String, amiből létrehozzuk az új String-et

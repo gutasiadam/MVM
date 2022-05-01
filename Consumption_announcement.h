@@ -10,11 +10,11 @@
 
 class Consumption_announcement{
     private:
-        Client& client;
         Date date;
         int electricMeterVal;
     public:
-        Consumption_announcement(Client& c, Date d, int emVal): client(c), date(d), 
+        Consumption_announcement() {};
+        Consumption_announcement(Date d, int emVal): date(d), 
         electricMeterVal(emVal){};
 
         Date& getDate();
