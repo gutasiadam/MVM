@@ -15,9 +15,10 @@ class Invoice{
         Date created;
         int consumptionAmt;
         double toBePaid;
-        Consumption_announcement& announcement;
+        Consumption_announcement announcement;
     public:
-        Invoice(Date c, int cAmt, Consumption_announcement cAnnounce): created(c), 
+        Invoice() {}; // Default ctor, Array-be rendezés miatt.
+        Invoice(Date c, int cAmt, Consumption_announcement& cAnnounce): created(c), 
         consumptionAmt(cAmt), announcement(cAnnounce) {};
         double calculate_toBePaid(Tariffs& t);
 };
