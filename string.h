@@ -47,6 +47,8 @@ public:
     /// Destruktor
     virtual ~String() { delete[] pData; }
 
+    bool operator==(const String& rhs)const;
+
     /// Kiírunk egy Stringet (debug célokra)
     /// Előtte kiírunk egy tetszőleges szöveget.
     /// @param txt - nullával lezárt szövegre mutató pointer

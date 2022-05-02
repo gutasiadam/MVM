@@ -19,6 +19,15 @@ class Date{
         int getYear();
         int getMonth();
         int getDay();
+
+        bool operator==(Date& rhs){
+            if(year==rhs.getYear() && month==rhs.getMonth() && day==rhs.getDay())
+                return true;
+            return false;
+        }
+
+        bool operator<(Date& rhs);
+        bool operator>(Date& rhs);
 };
 
 /// Globális függvények:

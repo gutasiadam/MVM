@@ -17,11 +17,13 @@ class Address{
         int apartment;
     public:
         Address() {};
-        Address(String t,String str,int h,int apt=0): town(t), street(str), house(h), apartment(apt){};
+        Address(String t, String str,int h,int apt=0): town(t), street(str), house(h), apartment(apt){};
         String& getStreet();
         String& getTown();
         int getHouse();
         int getApartment();
+
+        bool operator==(Address& rhs);
 };
 
 /// Globális függvények:
@@ -30,5 +32,4 @@ class Address{
 /// @param a0 - Address, amit kiírunk
 /// @return os
 std::ostream& operator<<(std::ostream& os, const Address& a0);
-
 #endif

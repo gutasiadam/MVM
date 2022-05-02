@@ -8,3 +8,5 @@ A Programozás Alapjai 2. - NHF
 
 ### Sample adatok
 - [] - A többi alap sample adatmező felvitele (Client: utolsó bejegyzett adat, egyenleg), többi fájl létrehozása 
+
+### Osztálydiagram frissítése!

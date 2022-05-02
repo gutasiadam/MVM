@@ -23,7 +23,7 @@
 #include <cstring>              // Sztringműveletekhez
 
 //#include "memtrace.h"           // a standard headerek után kell lennie
-//#include "string5.h"
+#include "String.h"
 
 
 /// Konstruktorok: egy char karakterből (createString)
@@ -53,9 +53,9 @@ String::String(const String& a){
 }
 
 /// Destruktor (disposeString)
-    String::~String(){
+    /* String::~String(){
         delete[] pData;
-    }
+    }*/
 
 /// operator=
 String& String::operator=(const String& a){

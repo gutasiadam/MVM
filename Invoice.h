@@ -13,14 +13,17 @@
 class Invoice{
     private:
         Date created;
+        Consumption_announcement announcement;
         int consumptionAmt;
         double toBePaid;
-        Consumption_announcement announcement;
+        
     public:
         Invoice() {}; // Default ctor, Array-be rendezés miatt.
-        Invoice(Date c, int cAmt, Consumption_announcement& cAnnounce): created(c), 
-        consumptionAmt(cAmt), announcement(cAnnounce) {};
-        double calculate_toBePaid(Tariffs& t);
+        Invoice(Date c, Consumption_announcement& cAnnounce): created(c), 
+        announcement(cAnnounce), consumptionAmt(cAnnounce.get_EM_val()), toBePaid(0) {};
+        double calculate_toBePaid(Tariffs& t); // Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás
+
+        double get_toBePaid();
 };
 
 #endif

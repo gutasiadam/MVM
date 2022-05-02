@@ -10,11 +10,13 @@
 (____|     .'         :K#t     ##D.    E#t ED.     :K#t     ##D.    E#t
      |____/            ...     #G      ..  t       ...      #G      .. 
                                j                            j          
-	Meseországi Villamos Művek
+	(M)eseországi (V)illamos (M)űvek
 	Gutási Ádám
 	Budapesti Műszaki és Gazdaságtudományi Egyetem
 	Programozás Alapjai II.
 	2022.
+
+	CLI főprogram (felhasználói változat)
 
 	fájl: mvm_with_menu.cpp
 
@@ -22,30 +24,39 @@
 
 #include "Controller.h"
 #include <iostream>
+#include <fstream>
+
+void add_newClient(){
+	// Kérje be a szükséges adatokat...
+}
 
 int main(void){
-	//Betöltéskor MVM logo kirajzolása
 	std::cout << "Meseországi Villamos Művek" << std::endl;
-	//Menü, amíg nem lép ki a felhasználó
-	Controller c;// (Clientdata.txt, Invoices.txt)...
+	//Menü, amíg ki nem lép a felhasználó
+	std::ofstream log("log.log");
+	/**
+	 * NHF 3- skeletonnál egyelőre nem kell helyesen működjön..
+	 * log << "Adatok betöltése folyamatban.." << std::endl;
+	 * Controller Ctrl("Clientdata.txt", "Invoices.txt");// (Clientdata.txt, Invoices.txt)...
+	 * log << "Betöltés kész." << std::endl;
+	 */
 	while(true){
 		int option=0;
-		std::cout << "== Ugyfelek ugykorei ==" << std::endl;
-		std::cout << "[1] - Uj ugyfel felvetele" << std::endl;
-		std::cout << "[2] - Egyenleg lekerdezese" << std::endl;
-		std::cout << "[3] - Egyenleg feltoltese" << std::endl;
-		std::cout << "[4] - Fogyasztas bejelentese" << std::endl;
-		std::cout << "== MVM ugykorei ==" << std::endl;
-		std::cout << "[5] - Szamlazas" << std::endl;
+		std::cout << "== Ügyfelek ügykörei ==" << std::endl;
+		std::cout << "[1] - Új ügyfél felvétele" << std::endl;
+		std::cout << "[2] - Egyenleg lekérdezése" << std::endl;
+		std::cout << "[3] - Egyenleg feltöltése" << std::endl;
+		std::cout << "[4] - Fogyasztás bejelentése" << std::endl;
+		std::cout << "== MVM ügykörei ==" << std::endl;
+		std::cout << "[5] - Számlázási időszak lezárása és számlázás" << std::endl;
 		std::cout << "== Rendszer ==" << std::endl;
-		std::cout << "[6] - Kilepes" << std::endl;
+		std::cout << "[6] - Kilépés" << std::endl;
 		std::cout << "> "; std::cin >> option;
 		system("CLEAR");
 		switch(option){
 			case 1:
+				add_newClient();
 				std::cout << "Uf" << std::endl;
-				// Ügyfél felvétele...
-				//add_newClient();
 				break;
 			case 2:
 				std::cout << "Egyenlegle" << std::endl;
@@ -73,7 +84,7 @@ int main(void){
 		}
 		
 	}
-	exit: ;
+	exit: log.close();
 
 	return 0;
 }

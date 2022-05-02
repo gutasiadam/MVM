@@ -23,24 +23,26 @@ class Client{
         Address resAddress;
         String mobile;
         String e_mail;
-        bool type;
-        int taxNumber;
-
-        unsigned short int phases;
-        unsigned short int strength;
-
-        Consumption_announcement* announcement;
-
+        String taxNumber;
         unsigned int electricMeter_last;
+
+        bool type;
+
+        int phases;
+        int strength;
+
+
         double balance;
 
+        Consumption_announcement* announcement;
+    public:
         Array<Invoice> archivedInvoices; // Archivált számlák
         Array<Invoice> pendingInvoices; // Befizetésre váró számlák
-    public:
+        
         Client() {}; // default ctor
-        Client(String N, Date b, Address res, String m, 
-        String em, int taxN, bool type): Name(N), born(b), resAddress(res), 
-        mobile(m), e_mail(em), taxNumber(taxN){
+        Client(int id, String N, Date b, Address res, String m, 
+        String em, String taxN, bool type, int phases, int strength): id(id), Name(N), born(b), resAddress(res), 
+        mobile(m), e_mail(em), taxNumber(taxN), electricMeter_last(0), type(type), phases(phases), strength(strength), balance(0){
             //e-mail, telefonszám validálása, majd beírás..
             //
         }
@@ -52,6 +54,7 @@ class Client{
         int getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
         Date& getDate() const; //  Lekérdezi az ügyfél születési dátumát.
         String& getName() const; // Lekérdezi az ügyfél nevét.
+        Address& getAddress() const; // Lakcím lekérdezése
 
         bool getType() const; // Visszaadja az ügyfél típusát (magánszemély/vállalati)
         
