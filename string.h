@@ -17,20 +17,22 @@ class String {
     char *pData;    ///< pointer az adatra
     size_t len;     ///< hossz lezáró nulla nélkül
 public:
-    String() {};
     /// Hossz lekérdezése.
     /// @return Sztring hossza
 	size_t size() const { return len; }
 
 
     /// Default konstruktor
-    /// String() :pData(0), len(0) {}
+    String() :pData(0), len(0) {}
     /// helyett ""-val inicializáljuk a const char*-osban
 
     /// C-sztringet ad vissza
     /// @return pinter egy '\0'-val lezárt (C) sztringre
     const char* c_str() const { return pData;}
 
+    /// Konstruktor egy size_t méretből
+    String(size_t siz);
+    
     /// Konstruktor egy char karakterből
     /// @param ch - karakter
     String(char ch);
@@ -64,13 +66,13 @@ public:
 
     /// Két Stringet összefűz
     /// @param rhs_s - jobboldali String
-    /// @return új String, ami tartalmazza a két stringet egmás után
+    /// @return új String, ami tartalmazza a két stringet egymás után
     String operator+(const String& rhs_s) const ;
 
     /// Sztringhez karaktert összefűz
     /// @param rhs_c - jobboldali karakter
     /// @return új String, ami tartalmazza a sztringet és a karaktert egymás után
-    String operator+(char rhs_c) const { return *this + String(rhs_c);}
+    //String operator+(char rhs_c) const { return *this + String(rhs_c);}
 
     /// A string egy megadott indexű elemének REFERENCIÁJÁVAL tér vissza.
     /// @param idx - charakter indexe
@@ -90,13 +92,13 @@ public:
 /// @param os - ostream típusú objektum
 /// @param s0 - String, amit kiírunk
 /// @return os
-std::ostream& operator<<(std::ostream& os, const String& s0);
+//std::ostream& operator<<(std::ostream& os, const String& s0);
 
 /// Beolvas az istream-ről egy szót egy string-be.
 /// @param is - istream típusú objektum
 /// @param s0 - String, amibe beolvas
 /// @return is
-std::istream& operator>>(std::istream& is, String& s0);
+//std::istream& operator>>(std::istream& is, String& s0);
 
 /// Karakterhez sztringet fűz
 /// @param ch - karakter

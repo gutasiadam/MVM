@@ -13,7 +13,7 @@ class Consumption_announcement{
         Date date;
         int electricMeterVal;
     public:
-        Consumption_announcement() {};
+        Consumption_announcement() :electricMeterVal(0){};
         Consumption_announcement(Date d, int emVal): date(d), 
         electricMeterVal(emVal){};
 

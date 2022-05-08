@@ -22,24 +22,27 @@
 
  * */
 
-#include "Controller.h"
 #include <iostream>
 #include <fstream>
+
+//#include "memtrace.h"
+#include "Controller.h"
+#include "Array.hpp"
+
 
 void add_newClient(){
 	// Kérje be a szükséges adatokat...
 }
 
+
 int main(void){
 	std::cout << "Meseországi Villamos Művek" << std::endl;
 	//Menü, amíg ki nem lép a felhasználó
 	std::ofstream log("log.log");
-	/**
-	 * NHF 3- skeletonnál egyelőre nem kell helyesen működjön..
-	 * log << "Adatok betöltése folyamatban.." << std::endl;
-	 * Controller Ctrl("Clientdata.txt", "Invoices.txt");// (Clientdata.txt, Invoices.txt)...
-	 * log << "Betöltés kész." << std::endl;
-	 */
+	// Adatok betöltése a streamről
+	 log << "Adatok betöltése folyamatban.." << std::endl;
+	 Controller Ctrl; Ctrl.loadData("Clientdata.txt", "Invoices.txt");// (Clientdata.txt, Invoices.txt)...)
+	 log << "Betöltés kész." << std::endl;
 	while(true){
 		int option=0;
 		std::cout << "== Ügyfelek ügykörei ==" << std::endl;
@@ -53,29 +56,43 @@ int main(void){
 		std::cout << "[6] - Kilépés" << std::endl;
 		std::cout << "> "; std::cin >> option;
 		system("CLEAR");
+		int id;
 		switch(option){
 			case 1:
+				std::cout << "=== Új Ügyfél felvétele ===" << std::endl;
 				add_newClient();
 				std::cout << "Uf" << std::endl;
 				break;
 			case 2:
-				std::cout << "Egyenlegle" << std::endl;
+				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				std::cout << "> "; std::cin >> id;
 				// Egyenleg lekérdezése..
-				// getClientFunds()
+				std::cout<< "("  << id << ") egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
+				char buf; std::cin >> buf;
 				break;
 			case 3:
-				std::cout << "Egyenlegfel" << std::endl;
-				// Egyenleg feltölése...
+				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				double val;
+				std::cout << "> "; std::cin >> id;
+				std::cout << "Összeg: "; std::cin >> val;
+				Ctrl.getClient(id).addFunds(val);
+				std::cout<< "("  << id << ") új egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
+				system("CLEAR");
 				// addClientFunds()
 				break;
 			case 4:
-				std::cout << "Fogyasztasbe" << std::endl;
+				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				std::cout << "> "; std::cin >> id;
+				std::cout << "Fogyasztás bejelentése - " << Ctrl.getClient(id).getId() << std::endl;
+				int emVal;
+				std::cout << "Mérőóra állása: " << std::endl;
+				std::cout << "> "; std::cin >> emVal;
 				// Fogyasztás bejelentés...
-				// consumptionAnnouncement();
+				Ctrl.getClient(id).announcement=Consumption_announcement(Date(2022,5,8),emVal);
 				break;
 			case 5:
-				std::cout << "Szamlazas" << std::endl;
-				//Számlázás...
+				std::cout << "bzzzzzzz" << std::endl;
+				std::cout << "todo: csináld meg" << std::endl;
 				//batch_generateInvoices()
 				break;
 			case 6:

@@ -2,32 +2,20 @@
  *
  * \file string5.cpp
  *
- * Itt kell megvalósítania a hiányzó tagfüggvényeket.
- * Segítségül megadtuk a C++ nem OO eszközeinek felhasználásával készített String-kezelő
- * függvények neveit.
- *
- * Ha valamit INLINE-ként valósít meg, akkor annak a string5.h-ba kell kerülnie,
- * akár kívül akár osztályon belül definiálja. (Az inline függvényeknek minden
- * fordítási egységben elérhetőknek kell lenniük)
- * *
- * A teszteléskor ne felejtse el beállítani a string5.h állományban az ELKESZULT makrót.
- *
  */
 
-#ifdef _MSC_VER
-// MSC ne adjon figyelmeztető üzenetet a C sztringkezelő függvényeire
-  #define _CRT_SECURE_NO_WARNINGS
-#endif
 
-#include <iostream>             // Kiíratáshoz
-#include <cstring>              // Sztringműveletekhez
+#include <iostream>
+#include <cstring>
 
-//#include "memtrace.h"           // a standard headerek után kell lennie
+//#include "memtrace.h"           // include a standard headerek után
 #include "String.h"
 
-
-/// Konstruktorok: egy char karakterből (createString)
-///                egy nullával lezárt char sorozatból (createString)
+    String::String(size_t siz){
+        len=siz;
+        pData= new char[siz+1];
+        pData[0]='\0';
+    }
 
     String::String(char c){
         len=1;
@@ -67,7 +55,14 @@ String& String::operator=(const String& a){
     }
     return *this;
     }
+String String::operator+(const String& rhs_s) const{
+    String tmp(this->len+rhs_s.size());
+    strcpy(tmp.pData,this->pData);
+    strcat(tmp.pData,rhs_s.pData);
+    tmp.pData[tmp.len]='\0';
 
+    return tmp;
+}
 /// [] operátorok: egy megadott indexű elem REFERENCIÁJÁVAL térnek vissza (charAtString)
 /// indexhiba esetén const char * kivételt dob!
 
@@ -76,7 +71,10 @@ String& String::operator=(const String& a){
 ///                 String-hez jobbról karaktert ad (addString)
 ///                 String-hez String-et ad (addString)
 /// << operator, ami kiír az ostream-re
-
+std::ostream& operator<<(std::ostream& os, const String& s){
+    os << s.c_str();
+    return os;
+}
 
 /// >> operátor, ami beolvas az istream-ről egy szót
 

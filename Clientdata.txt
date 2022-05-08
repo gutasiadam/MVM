@@ -1,30 +1,30 @@
-1	Pintér	Angéla	0382412-7-48	Veszprém	Endre sugárút	04 26	+36-61-225-3811	balazs02@virag.com	0	1986	3	12	2	32
-2	Tóth	Liliána	6957901-2-17	Szekszárd	Henriett lejtő	18 42	06-47-015-4948	liliana20@lukacs.com	0	1965	5	16	2	32
-3	Orsós	Patrik	9347161-2-46	Budapest	Tamás körönd	3 85	06(24)755-413	kbalazs@varadi.biz	1	1997	10	10	3	 63
-4	Deák	Adél	7758173-0-76	Budapest	Gábor dűlőút	638 78	+36(12)619-504	jonas.bence@juhasz.net	0	1956	5	23	2	16
-5	Fábián	Szervác	3925577-8-84	Győr	Albert átjáró	8 87	+36(59)239-407	somogyi.matyas@yahoo.com	1	1945	2	12	3	63
-6	Horváth	Zsolt	8549005-4-79	Budapest	Liza udvar	896	06-03-351-6482	barna.flora@gmail.com	1	1974	5	8	2	32
-7	Vass	Antal	8389205-1-73	Budapest	Ottó gát	1	+36-68-547-9074	qpapp@farago.org	0	1972	10	19	2	32
-8	Pap	Kornél	7963370-5-63	Nyíregyháza	Tamás útja	723 34	06-52-179-0188	magyar.patrik@fabian.biz	0	1943	3	10	2	32
-9	Mészáros	Szandra	9277456-7-49	Budapest	István árok	912	88	06(19)982-618	fabian.oliver@yahoo.com	1	1948	1	1	3	63
-10	Vörös	Kincső	8439576-7-15	Budapest	Kevin sétaút	04 90	06(34)616-019	ekiss@bognar.com	0	2000	2	23	2	32
-11	Budai	Míra	0130612-6-06	Kecskemét	Georgina turistaút	27 83	06-23-482-3816	pballa@gmail.com	1	1989	6	23	3	128
-12	Gál	János	8401964-2-71	Nyíregyháza	Ottó part	478 10	+36049138939	fulop.gitta@hotmail.com	1	1961	9	15	3	32
-13	Illés	Barna	7679718-0-97	Budapest	Oláh üdülőpart	1	+36(53)590-258	umagyar@gmail.com	0	1963	3	27	2	16
-14	Kocsis	Dorián	6421122-6-77	Budapest	Kocsis üdülőpart	937	+36218097199	armin94@hotmail.com	0	2002	11	26	2	32
-15	Vincze	Bendegúz	5666340-0-25	Letenye	Somogyi kert	4 49	06-26-230-6184	hegedus.gitta@gmail.com	0	1999	11	3	2	32
-16	Biró	Benedek	3680954-2-75	Budapest	Márton lejtő	72	06-83-372-2281	wfekete@peter.com	0	2000	12	15	2	32
-17	Pál	Szandra	7872560-3-09	Veszprém	Erzsébet sétány	06	+36(06)989-528	snagy@hotmail.com	1	1964	3	15	3	 63
-18	Kovács	Dorián	8358944-2-51	Szekszárd	Milán útja	05 17	+36(60)523-130	benedek.feher@gmail.com	0	1956	7	19	2	32
-19	Szücs	Géza	8401644-9-88	Mezőkovácsháza	Valéria part	5	06(09)119-017	ysimon@gmail.com	0	1977	5	24	2	32
-20	Varga	Henrietta	5207778-2-73	Tata	Bence park	36 29	+36-09-873-1016	varga.lena@vegh.com	0	1997	12	24	2	32
-21	Jakab	Ádám	1560225-1-07	Pétervására	Marietta liget	673	+36-11-098-4726	patrik.fodor@biro.net	0	2000	4	5	2	32
-22	Major	Gábor	7999420-6-47	Püspökladány	Fanni híd	03	+36-84-232-5823	mirella09@yahoo.com	0	1964	4	16	2	32
-23	Farkas	Boglárka	6080689-6-57	Budapest	Péter körönd	911 01	+36425983881	gal.janos@gmail.com	0	1954	9	10	2	32
-24	Juhász	Andrea	4521350-2-14	Budapest	Váradi dűlőút	860	+36-29-957-2834	angela00@yahoo.com	0	1957	4	8	2	16
-25	Jakab	Ármin	1978865-5-42	Budapest	Boglárka mélyút	59	+36(66)710-389	peter.kiraly@yahoo.com	0	1943	8	9	2	16
-26	Orbán	Evelin	2174667-4-92	Orosháza	Kis udvar	3	06(44)646-657	virag75@illes.com	0	1972	7	15	2	32
-27	Takács	Johanna	9208932-6-01	Zalaegerszeg	Sándor liget	740	06(67)131-808	bdobos@jonas.biz	1	1984	11	30	3	63
-28	Balázs	Katinka	1483555-9-85	Budapest	Gábor turistaút	44 14	+36-19-054-6968	flora67@fulop.info	0	1954	8	3	2	32
-29	Tamás	Mia	6311502-9-47	Székesfehérvár	Sára forduló	5 80	+36-46-615-0722	albert09@simon.com	0	1992	9	29	2	32
-30	Hegedüs	Noel	9030284-9-60	Budapest	Major határsor	08	+36-87-854-6988	tpap@hegedus.com	1	1977	7	17	3	63
+1	Pinter	Angela	0382412-7-48	Veszprem	Endre	04 26	+36-61-225-3811	balazs02@virag.com	0	1986	3	12	2	32
+2	Toth	Liliana	6957901-2-17	Szekszard	Henriett	18 42	06-47-015-4948	liliana20@lukacs.com	0	1965	5	16	2	32
+3	Orsos	Patrik	9347161-2-46	Budapest	Tamas	3 85	06(24)755-413	kbalazs@varadi.biz	1	1997	10	10	3	 63
+4	Deak	Adel	7758173-0-76	Budapest	Gabor	638 78	+36(12)619-504	jonas.bence@juhasz.net	0	1956	5	23	2	16
+5	Fabian	Szervac	3925577-8-84	Gyor	Albert	8 87	+36(59)239-407	somogyi.matyas@yahoo.com	1	1945	2	12	3	63
+6	Horvath	Zsolt	8549005-4-79	Budapest	Liza	896	06-03-351-6482	barna.flora@gmail.com	1	1974	5	8	2	32
+7	Vass	Antal	8389205-1-73	Budapest	Otto	1	+36-68-547-9074	qpapp@farago.org	0	1972	10	19	2	32
+8	Pap	Kornel	7963370-5-63	Nyiregyhaza	Tamas	723 34	06-52-179-0188	magyar.patrik@fabian.biz	0	1943	3	10	2	32
+9	Meszaros	Szandra	9277456-7-49	Budapest	Istvan	912	88	06(19)982-618	fabian.oliver@yahoo.com	1	1948	1	1	3	63
+10	Vörös	Kincso	8439576-7-15	Budapest	Kevin	04 90	06(34)616-019	ekiss@bognar.com	0	2000	2	23	2	32
+11	Budai	Mira	0130612-6-06	Kecskemet	Georgina	27 83	06-23-482-3816	pballa@gmail.com	1	1989	6	23	3	128
+12	Gal	Janos	8401964-2-71	Nyiregyhaza	Otto	478 10	+36049138939	fulop.gitta@hotmail.com	1	1961	9	15	3	32
+13	Illes	Barna	7679718-0-97	Budapest	Olah	1	+36(53)590-258	umagyar@gmail.com	0	1963	3	27	2	16
+14	Gal	Janos	8401964-2-71	Nagykanizsa	Csonka	11 10	+36049138939	fulop.gitta@biz.com	0	1961	9	15	3	128
+15	Vincze	Bendeguz	5666340-0-25	Letenye	Somogyi	4 49	06-26-230-6184	hegedus.gitta@gmail.com	0	1999	11	3	2	32
+16	Biro	Benedek	3680954-2-75	Budapest	Marton	72	06-83-372-2281	wfekete@peter.com	0	2000	12	15	2	32
+17	Pal	Szandra	7872560-3-09	Veszprem	Erzsebet	06	+36(06)989-528	snagy@hotmail.com	1	1964	3	15	3	 63
+18	Kovacs	Dorian	8358944-2-51	Szekszard	Milan	05 17	+36(60)523-130	benedek.feher@gmail.com	0	1956	7	19	2	32
+19	Szücs	Geza	8401644-9-88	Mezokovacshaza	Valeria	5	06(09)119-017	ysimon@gmail.com	0	1977	5	24	2	32
+20	Varga	Henrietta	5207778-2-73	Tata	Bence	36 29	+36-09-873-1016	varga.lena@vegh.com	0	1997	12	24	2	32
+21	Jakab	Adam	1560225-1-07	Petervasara	Marietta	673	+36-11-098-4726	patrik.fodor@biro.net	0	2000	4	5	2	32
+22	Major	Gabor	7999420-6-47	Püspökladany	Fanni	03	+36-84-232-5823	mirella09@yahoo.com	0	1964	4	16	2	32
+23	Farkas	Boglarka	6080689-6-57	Budapest	Peter	911 01	+36425983881	gal.janos@gmail.com	0	1954	9	10	2	32
+24	Juhasz	Andrea	4521350-2-14	Budapest	Varadi	860	+36-29-957-2834	angela00@yahoo.com	0	1957	4	8	2	16
+25	Jakab	Armin	1978865-5-42	Budapest	Boglarka	59	+36(66)710-389	peter.kiraly@yahoo.com	0	1943	8	9	2	16
+26	Orban	Evelin	2174667-4-92	Oroshaza	Kis	3	06(44)646-657	virag75@illes.com	0	1972	7	15	2	32
+27	Takacs	Johanna	9208932-6-01	Zalaegerszeg	Sandor	740	06(67)131-808	bdobos@jonas.biz	1	1984	11	30	3	63
+28	Balazs	Katinka	1483555-9-85	Budapest	Gabor	44 14	+36-19-054-6968	flora67@fulop.info	0	1954	8	3	2	32
+29	Tamas	Mia	6311502-9-47	Szekesfehervar	Sara	5 80	+36-46-615-0722	albert09@simon.com	0	1992	9	29	2	32
+30	Hegedüs	Noel	9030284-9-60	Budapest	Major	08	+36-87-854-6988	tpap@hegedus.com	1	1977	7	17	3	63

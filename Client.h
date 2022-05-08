@@ -24,7 +24,7 @@ class Client{
         String mobile;
         String e_mail;
         String taxNumber;
-        unsigned int electricMeter_last;
+        int electricMeter_last;
 
         bool type;
 
@@ -34,8 +34,8 @@ class Client{
 
         double balance;
 
-        Consumption_announcement* announcement;
     public:
+        Consumption_announcement announcement;
         Array<Invoice> archivedInvoices; // Archivált számlák
         Array<Invoice> pendingInvoices; // Befizetésre váró számlák
         
@@ -51,14 +51,14 @@ class Client{
         void addFunds(double moneyVal); // Összeget ír jóvá az ügyfél számláján.
         double getBalance() const;// Lekérdezi az ügyfél egyenlegét.
         int getId() const; // Lekérdezi az Ügyfél azonosítóját.
-        int getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
-        Date& getDate() const; //  Lekérdezi az ügyfél születési dátumát.
-        String& getName() const; // Lekérdezi az ügyfél nevét.
-        Address& getAddress() const; // Lakcím lekérdezése
+        String getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
+        Date getDate() const; //  Lekérdezi az ügyfél születési dátumát.
+        String getName() const; // Lekérdezi az ügyfél nevét.
+        Address getAddress() const; // Lakcím lekérdezése
 
         bool getType() const; // Visszaadja az ügyfél típusát (magánszemély/vállalati)
         
-        int getTN() const;
+        String getTN() const;
             // Lekérdezi az ügyfél/vállalat adóazonosítóját.
         int getElectricMeterVal() const; // Lekérdezi a villanyóra azon állását, amediig be van fizetve
 
@@ -70,7 +70,7 @@ class Client{
             // (lényegében a pendingInvoices új hosszát.)
 
         protected:
-            void modify_electricMeter(unsigned int amt);
+            void modify_electricMeter(int amt);
             // befizetés után módosítja a villanyóra azon
             // állását, ameddig be van fizetve
             // (electricMeter_last)
