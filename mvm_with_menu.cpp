@@ -40,9 +40,9 @@ int main(void){
 	//Menü, amíg ki nem lép a felhasználó
 	std::ofstream log("log.log");
 	// Adatok betöltése a streamről
-	 log << "Adatok betöltése folyamatban.." << std::endl;
-	 Controller Ctrl; Ctrl.loadData("Clientdata.txt", "Invoices.txt");// (Clientdata.txt, Invoices.txt)...)
-	 log << "Betöltés kész." << std::endl;
+	 log << "[init] Adatok betöltése folyamatban.." << std::endl;
+	 Controller Ctrl; Ctrl.loadData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt");// (Clientdata.txt, Invoices.txt)...)
+	 log << "[init] Betöltés kész." << std::endl;
 	while(true){
 		int option=0;
 		std::cout << "== Ügyfelek ügykörei ==" << std::endl;
@@ -50,10 +50,11 @@ int main(void){
 		std::cout << "[2] - Egyenleg lekérdezése" << std::endl;
 		std::cout << "[3] - Egyenleg feltöltése" << std::endl;
 		std::cout << "[4] - Fogyasztás bejelentése" << std::endl;
+		std::cout << "[5] - Tartozás ellenőrzése" << std::endl;
 		std::cout << "== MVM ügykörei ==" << std::endl;
-		std::cout << "[5] - Számlázási időszak lezárása és számlázás" << std::endl;
+		std::cout << "[6] - Számlázási időszak lezárása és számlázás" << std::endl;
 		std::cout << "== Rendszer ==" << std::endl;
-		std::cout << "[6] - Kilépés" << std::endl;
+		std::cout << "[7] - Kilépés" << std::endl;
 		std::cout << "> "; std::cin >> option;
 		system("CLEAR");
 		int id;
@@ -61,29 +62,29 @@ int main(void){
 			case 1:
 				std::cout << "=== Új Ügyfél felvétele ===" << std::endl;
 				add_newClient();
-				std::cout << "Uf" << std::endl;
 				break;
 			case 2:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
 				std::cout << "> "; std::cin >> id;
 				// Egyenleg lekérdezése..
-				std::cout<< "("  << id << ") egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
+				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
 				char buf; std::cin >> buf;
 				break;
 			case 3:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
 				double val;
 				std::cout << "> "; std::cin >> id;
+				std::cout << "Egyenleg feltöltése " << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << "Számára." << std::endl;
 				std::cout << "Összeg: "; std::cin >> val;
 				Ctrl.getClient(id).addFunds(val);
-				std::cout<< "("  << id << ") új egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
-				system("CLEAR");
+				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") új egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
 				// addClientFunds()
 				break;
 			case 4:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				id=0;
 				std::cout << "> "; std::cin >> id;
-				std::cout << "Fogyasztás bejelentése - " << Ctrl.getClient(id).getId() << std::endl;
+				std::cout << "Fogyasztás bejelentése - " << Ctrl.getClient(id-1).getId() << std::endl;
 				int emVal;
 				std::cout << "Mérőóra állása: " << std::endl;
 				std::cout << "> "; std::cin >> emVal;
@@ -91,17 +92,25 @@ int main(void){
 				Ctrl.getClient(id).announcement=Consumption_announcement(Date(2022,5,8),emVal);
 				break;
 			case 5:
-				std::cout << "bzzzzzzz" << std::endl;
-				std::cout << "todo: csináld meg" << std::endl;
-				//batch_generateInvoices()
+				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				id=0;
+				std::cout << "> "; std::cin >> id;
+				std::cout << "Tartozás ellenőrzése - " << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << std::endl;
+				std::cout << "WIP";
 				break;
-			case 6:
+			case 7:
 				goto exit;
 				break;
+			default:
+				std::cout << "Ismeretlen parancs." << std::endl;
 		}
 		
 	}
-	exit: log.close();
+	exit: 
+	///Perzisztencia - adatok kimentése az eredeti fájljaikba.
+	Ctrl.saveData("TSTClientdata.txt", "TSTInvoices_archived.txt", "TSTInvoices_pending.txt");
+	log.close();
+
 
 	return 0;
 }

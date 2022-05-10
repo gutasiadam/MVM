@@ -71,7 +71,7 @@ String String::operator+(const String& rhs_s) const{
 ///                 String-hez jobbról karaktert ad (addString)
 ///                 String-hez String-et ad (addString)
 /// << operator, ami kiír az ostream-re
-std::ostream& operator<<(std::ostream& os, const String& s){
+std::ostream& operator<<(std::ostream& os, const String s){
     os << s.c_str();
     return os;
 }

@@ -10,15 +10,35 @@
  * Ez a fájl tartalmazza az Array sablont.
  */
 
-template <class T,  size_t Siz = 100>
+template <class T>
 class Array{
-    T data[Siz];
-    size_t amt;
-    size_t cap;
+    T* data;
+    T* first;
+    T* last;
+    size_t used;
     public:
-        Array(): amt(0), cap(Siz){
+        Array(size_t Siz=0): used(Siz){
+            data=new T[used];
+            first=data;
+            last=data+used;
         }
-        virtual ~Array(){}
+        virtual ~Array(){
+            delete[] data;
+        }
+
+        //hozzáad egy elemet a tömbhöz.
+        void add(T& newElement){ 
+            T* tmp=new T[this->used+1];
+            for(size_t i=0;i<this->used;i++){
+                tmp[i]=this->data[i];
+            }
+        tmp[this->used]=newElement; // pl:: Client másoló konstruktora fut itt le.
+        
+        delete[] this->data;
+        this->data=tmp;
+
+        used++;
+        }
 
         //visszaad egy elemet adott indexn, hasonló az operator[]-hoz.
         T& get(size_t ind) const{
@@ -27,77 +47,64 @@ class Array{
             
         //visszaadja a tömb méretét.
         size_t size() const{
-            return this->amt;
+            return this->used;
         }
-        /*T& first() const{
-            return data[0];
+        
+        T* begin() const{
+            return &data[0];
         }
-        T& last() const{
-            return data[amt];
-        }*/
-        //logikai értékkel té vissza, attól függően, 
-        //hogy egy adott elem benne, van-e a tömbben.
-        bool isElement(T& e) const{
-                for (size_t i=0; i<amt; i++) {
+        T* end() const{
+            return &data[used-1];
+        }
+
+        //int értékkel tér vissza, attól függően, 
+        //hogy egy adott elem hol van benne, van-e a tömbben.
+        ///@return -1, ha nincs benne, a szám indexét, ha benne van.
+        int isElement(T& e) const{
+                for (size_t i=0; i<used; i++) {
                     if ((data[i]==e)) {
-                        return true;
+                        return i;
                     }
-                return false;
+                return -1;
                 }
         }
             //töröl egy adott indexű elemet.
             //std::out_of_range hibát dob hibás indexelés esetén
-        /*void del(size_t index){
-            if(index>len-1 || index<0){
+        void del(size_t index){
+            if(index>used-1 || index<0){
                 throw(std::out_of_range("Indexelesi hiba"));
                 return;
             }
             else{
-                for (int i = 0; i < len-1; i++)
+                for (int i = 0; i < used-1; i++)
             if (i==index){
-                for ( ; i < len - 1; i++){
-                    elements[i] = elements[i + 1];
+                for ( ; i < used - 1; i++){
+                    data[i] = data[i + 1];
                 }
             // Legutolsó elem már nem másolandó, hiszen előbbre került.
-            len-= 1;
-            T* tmp=new T[len];
-            for(size_t e;e<len-1;e++){
-                tmp[e]=elements[e];
+            used-= 1;
+            T* tmp=new T[used];
+            for(size_t e;e<used;e++){
+                tmp[e]=data[e];
             }
-            delete[] elements;
-                elements=tmp;
+            delete[] data;
+            data=tmp;
         } 
             }
             
-        }*/
+        }
 
         //töröl egy adott elemet a tömbből.
         //std::logic_error-t dob, ha a törölni kívánt elem nem tagja az arraynek.
-        /*void del(T& e){
-            if(!(isElement(e))){
+        void del(T& e){
+            int flag=isElement(e);
+            if(flag==-1){
                 throw(std::logic_error("Element not in array."));
             }else{
-                size_t i=0;
-                T* first=this->elements;
-                T* last=this->elements+(this->len-1);
-                for (; first != last; ++first, ++last, i++) {
-                    if ((*first==e)) {
-                        break;
-                    }
-                del(i);
-                }
-            }
-        }*/
-
-        //hozzáad egy elemet a tömbhöz.
-        void add(T p){
-            if (amt>=Siz) {
-                throw std::domain_error("Full");
-            }else{
-                data[amt]=p;
-                amt++;
+               del(flag);
             }
         }
+
 
         //Újraméretezi a tömböt a paraéterként kapott értékre.
         //Ha az új méret kisebb, mint a mostani, 
@@ -106,29 +113,34 @@ class Array{
             std::cout << "I am a dummy resize !";
             /*
             T* tmp= new T [Siz];
-            for(size_t e=0;e<len-1;e++){
-                tmp[e]=elements[e];
+            for(size_t e=0;e<used-1;e++){
+                tmp[e]=data[e];
             }
-            delete[] elements;
-            elements=tmp;*/
+            delete[] data;
+            data=tmp;*/
         }
 
         template<class FuncType>
         void traverse(FuncType func){
-            for(size_t i=0;i<amt;i++){
+            for(size_t i=0;i<used;i++){
                 func(data[i]);
             }
         }
 
         //indexelő operátor
         // egy adott indexű elem refernciájával tér vissza.
-        T& operator[](size_t index){
+        T& operator[](size_t index) const{
             return data[index];
         }
 
-        std::ostream& operator<<(std::ostream& os){
-            os << "TODO: Array kiírása normálisan.";
-            return os;
+
+        Array& operator=(const Array& rhs){
+            used=rhs.size();
+            delete[] data; new T[used];
+            for(size_t i=0;i<used;i++){
+                data[i]=rhs[i];
+            }
+            return *this;
         }
 
 };

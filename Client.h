@@ -13,12 +13,15 @@
 #include "Client.h"
 #include "Invoice.h"
 #include "Array.hpp"
+#include "Consumption_announcement.h"
 #include <regex> // E-mail és telefonszám validálására.
 
 class Client{
+    friend class Controller;
     private:
         int id;
-        String Name;
+        String firstName;
+        String lastName;
         Date born;
         Address resAddress;
         String mobile;
@@ -40,21 +43,30 @@ class Client{
         Array<Invoice> pendingInvoices; // Befizetésre váró számlák
         
         Client() {}; // default ctor
-        Client(int id, String N, Date b, Address res, String m, 
-        String em, String taxN, bool type, int phases, int strength): id(id), Name(N), born(b), resAddress(res), 
+        Client(int id, String lN, String fN, Date b, Address res, String m, 
+        String em, String taxN, bool type, int phases, int strength): id(id), lastName(fN), firstName(lN), born(b), resAddress(res), 
         mobile(m), e_mail(em), taxNumber(taxN), electricMeter_last(0), type(type), phases(phases), strength(strength), balance(0){
             //e-mail, telefonszám validálása, majd beírás..
             //
         }
-        
+
+        Client& operator=(Client& rhs); // Copy operator
+
+        size_t ClientSize();
 
         void addFunds(double moneyVal); // Összeget ír jóvá az ügyfél számláján.
         double getBalance() const;// Lekérdezi az ügyfél egyenlegét.
         int getId() const; // Lekérdezi az Ügyfél azonosítóját.
         String getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
+        String getEMail() const; // lekérdezi az ügyfél e-mail címét
         Date getDate() const; //  Lekérdezi az ügyfél születési dátumát.
-        String getName() const; // Lekérdezi az ügyfél nevét.
+        String getfirstName() const; // Lekérdezi az ügyfél keresztnevét.
+        String getlastName() const; // Lekérdezi az ügyfél vezetéknevét.
         Address getAddress() const; // Lakcím lekérdezése
+
+        int getPhases() const;
+        int getStrength() const;
+
 
         bool getType() const; // Visszaadja az ügyfél típusát (magánszemély/vállalati)
         

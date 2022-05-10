@@ -5,7 +5,6 @@
  *
  * Ez a fájl tartalmazza a Consumption_announcement osztály deklarációját és inline függvényeit.
  */
-#include "Client.h"
 #include "Date.h"
 
 class Consumption_announcement{

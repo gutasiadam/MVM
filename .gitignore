@@ -6,3 +6,4 @@ settings.json
 .DS_Store
 Makefile
 2ajCN.gif
+*.o

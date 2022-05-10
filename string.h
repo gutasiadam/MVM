@@ -1,7 +1,7 @@
 #ifndef STRING_H
 #define STRING_H
 /**
- * \file string5.h
+ * \file String.h
  *
  * Ez a fájl tartalmazza a String osztály deklarációját és inline függvényeit.
  */
@@ -85,6 +85,8 @@ public:
     /// @return karakter (referencia)
     ///         Indexelési hiba esetén const char* kivételt dob (assert helyett).
     const char& operator[](unsigned int idx) const;
+
+    friend std::ostream& operator<<(std::ostream& os, String p);
 };
 
 /// Globális függvények:

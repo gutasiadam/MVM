@@ -14,11 +14,12 @@ class Date{
         int month;
         int day;
     public:
+        friend std::ostream& operator<<(std::ostream& os, Date& d);
         Date() {};
         Date(int y,int m, int d): year(y), month(m), day(d){};
-        int getYear();
-        int getMonth();
-        int getDay();
+        int getYear(){return year;};
+        int getMonth(){return month;};
+        int getDay(){return day;};
 
         bool operator==(Date& rhs){
             if(year==rhs.getYear() && month==rhs.getMonth() && day==rhs.getDay())
@@ -35,6 +36,9 @@ class Date{
 /// @param os - ostream típusú objektum
 /// @param d0 - Date, amit kiírunk
 /// @return os
-std::ostream& operator<<(std::ostream& os, const Date& d0);
+/*std::ostream& operator<<(std::ostream& os, Date& d){
+    os << d.getYear() << "." << d.getMonth() << "." << d.getDay();
+    return os;
+}*/
 
 #endif

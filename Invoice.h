@@ -10,6 +10,7 @@
 #include "Tariffs.h"
 #include "Consumption_announcement.h"
 
+
 class Invoice{
     private:
         Date created;

@@ -18,12 +18,19 @@ class Address{
     public:
         Address() {};
         Address(String t, String str,int h,int apt=0): town(t), street(str), house(h), apartment(apt){};
-        String& getStreet();
-        String& getTown();
-        int getHouse();
-        int getApartment();
+        String& getStreet(){return street;};
+        String& getTown(){return town;};
+        int getHouse(){return house;};
+        int getApartment(){return apartment;};
 
-        bool operator==(Address& rhs);
+        bool operator==(Address& rhs){
+            if(town==rhs.getTown() && street==rhs.getStreet() 
+            && house==rhs.getHouse() && apartment==rhs.getApartment()){
+                return true;
+            }else{
+                return false;
+            }
+        };
 };
 
 /// Globális függvények:
