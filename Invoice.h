@@ -19,12 +19,12 @@ class Invoice{
         double toBePaid;
         
     public:
-        Invoice() {}; // Default ctor, Array-be rendezés miatt.
+        Invoice() : toBePaid(0), consumptionAmt(0){}; // Default ctor, Array-be rendezés miatt.
         Invoice(Date c, Consumption_announcement& cAnnounce): created(c), 
         announcement(cAnnounce), consumptionAmt(cAnnounce.get_EM_val()), toBePaid(0) {};
         double calculate_toBePaid(Tariffs& t); // Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás
-
-        double get_toBePaid();
+        void set_toBePaid(double what){toBePaid=what;}
+        double get_toBePaid() const;
 };
 
 #endif

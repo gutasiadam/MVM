@@ -7,6 +7,7 @@
  */
 
 #include <iostream>
+//#include "memtrace.h"
 #include "String.h"
 
 class Address{
@@ -31,12 +32,8 @@ class Address{
                 return false;
             }
         };
+        //friend std::ostream& operator<<(std::ostream& os, Address& a);
 };
 
-/// Globális függvények:
-/// kiír az ostream-re
-/// @param os - ostream típusú objektum
-/// @param a0 - Address, amit kiírunk
-/// @return os
-std::ostream& operator<<(std::ostream& os, const Address& a0);
+
 #endif

@@ -2,6 +2,7 @@
 #define ADD_HEADER
 
 #include <stdexcept>
+//#include "memtrace.h"
 /**
  * \file Array.hpp
  *
@@ -28,16 +29,15 @@ class Array{
 
         //hozzáad egy elemet a tömbhöz.
         void add(T& newElement){ 
-            T* tmp=new T[this->used+1];
+            std::cout << "Add indul, tömb mérete: " << this->used << std::endl;
+            T* tmp=new T[this->used+1]; // Itt akad el, ha hozzá akar adni új elemet. Miért?
             for(size_t i=0;i<this->used;i++){
                 tmp[i]=this->data[i];
             }
-        tmp[this->used]=newElement; // pl:: Client másoló konstruktora fut itt le.
-        
+        tmp[this->used]=newElement;
         delete[] this->data;
         this->data=tmp;
-
-        used++;
+        used++; // használt méret nő eggyel.
         }
 
         //visszaad egy elemet adott indexn, hasonló az operator[]-hoz.
@@ -71,6 +71,7 @@ class Array{
             //töröl egy adott indexű elemet.
             //std::out_of_range hibát dob hibás indexelés esetén
         void del(size_t index){
+            //TODO A törlés még nem működik rendesen!
             if(index>used-1 || index<0){
                 throw(std::out_of_range("Indexelesi hiba"));
                 return;

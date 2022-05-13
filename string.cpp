@@ -8,7 +8,7 @@
 #include <iostream>
 #include <cstring>
 
-//#include "memtrace.h"           // include a standard headerek után
+////#include "memtrace.h"           // include a standard headerek után
 #include "String.h"
 
     String::String(size_t siz){

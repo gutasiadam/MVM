@@ -26,15 +26,20 @@ class Controller {
         void loadData(char const* CData, char const* Invoices, char const* Invoices_pending);
         void saveData(char const* CData, char const* Invoices, char const* Invoices_pending);
 
-        void create_invoices();
-        void create_invoice();
-        void newClient(Client& c);
+        void create_Invoices(); // Számlázi időszak lezártával lefutó folyamat.
+        void create_Invoice();
+        void newClient();
         void announceConsumption(Client&c,int emVal);
         Client& getClient(int id);
         Client& getClient(String& name);
+
+        int clientsCount();
         
         Tariffs& getTariffs();
 
         //virtual ~Controller();
 };
+
+
+
 #endif

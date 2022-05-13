@@ -7,6 +7,9 @@
  */
 
 #include <iostream>
+#include <regex> // E-mail és telefonszám validálására.
+//#include "memtrace.h"
+
 #include "Address.h"
 #include "Date.h"
 #include "String.h"
@@ -14,7 +17,7 @@
 #include "Invoice.h"
 #include "Array.hpp"
 #include "Consumption_announcement.h"
-#include <regex> // E-mail és telefonszám validálására.
+
 
 class Client{
     friend class Controller;
@@ -44,10 +47,9 @@ class Client{
         
         Client() {}; // default ctor
         Client(int id, String lN, String fN, Date b, Address res, String m, 
-        String em, String taxN, bool type, int phases, int strength): id(id), lastName(fN), firstName(lN), born(b), resAddress(res), 
+        String em, String taxN, bool type, int phases, int strength): id(id), firstName(fN), lastName(lN), born(b), resAddress(res), 
         mobile(m), e_mail(em), taxNumber(taxN), electricMeter_last(0), type(type), phases(phases), strength(strength), balance(0){
-            //e-mail, telefonszám validálása, majd beírás..
-            //
+            ///TODO: e-mail, telefonszám validálása
         }
 
         Client& operator=(Client& rhs); // Copy operator
@@ -74,6 +76,7 @@ class Client{
             // Lekérdezi az ügyfél/vállalat adóazonosítóját.
         int getElectricMeterVal() const; // Lekérdezi a villanyóra azon állását, amediig be van fizetve
 
+        double getDebtval() const; //Tartozás mennyiségének kiszámolása. Összegzi a befizetésre váró számlák fizetendőit.
         void pay_Pending_Invoices();
             // Egyenleg hozzáadása után egyből lefut
             // Megpróbálja befizetni a befizetésre váró számlákat.
@@ -81,6 +84,7 @@ class Client{
             // Visszaadja, hány darab számla vár még befizetésre.
             // (lényegében a pendingInvoices új hosszát.)
 
+        friend std::ostream& operator<<(std::ostream& os, Client& c);
         protected:
             void modify_electricMeter(int amt);
             // befizetés után módosítja a villanyóra azon
@@ -94,6 +98,6 @@ class Client{
 /// @param os - ostream típusú objektum
 /// @param c0 - Client, amit kiírunk
 /// @return os
-std::ostream& operator<<(std::ostream& os, const Client& c0);
+
 
 #endif
