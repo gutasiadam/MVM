@@ -17,7 +17,7 @@
 17	Pal	Szandra	7872560-3-09	Veszprem	Erzsebet	6	2	+36(06)989-528	snagy@hotmail.com	1	1964	3	15	3	 63	0
 18	Kovacs	Dorian	8358944-2-51	Szekszard	Milan	5	17	+36(60)523-130	benedek.feher@gmail.com	0	1956	7	19	2	32	0
 19	Szücs	Geza	8401644-9-88	Mezokovacshaza	Valeria	5	1	06(09)119-017	ysimon@gmail.com	0	1977	5	24	2	32	0
-20	Varga	Henrietta	5207778-2-73	Tata	Bence	36	2	+36-09-873-1016	varga.lena@vegh.com	0	1997	12	24	2	32	0
+20	Varga	Henrietta	5207778-2-73	Tata	Bence	36	2	+36-09-873-1016	varga.lena@vegh.com	0	1997	12	24	2	32	1000
 21	Jakab	Adam	1560225-1-07	Petervasara	Marietta	67	3	+36-11-098-4726	patrik.fodor@biro.net	0	2000	4	5	2	32	0
 22	Major	Gabor	7999420-6-47	Püspökladany	Fanni	3	1	+36-84-232-5823	mirella09@yahoo.com	0	1964	4	16	2	32	0
 23	Farkas	Boglarka	6080689-6-57	Budapest	Peter	911	1	+36425983881	gal.janos@gmail.com	0	1954	9	10	2	32	0

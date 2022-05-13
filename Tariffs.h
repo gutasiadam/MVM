@@ -8,17 +8,15 @@
 
 
 class Tariffs{
-    private:
-        static double VAT;
-        static double residental;
-        static double corporate;
-        static double usage_fee;
     public:
-        Tariffs() {};
-
-        double getVAT();
-        double getResidental();
-        double getCorporate();
-        double get_usage_fee();
+        static double residental_16;
+        static double residental_32;
+        static double corporate_2ph_32;
+        static double corporate_2ph_63;
+        static double corporate_2ph_128;
+        static double corporate_3ph_32;
+        static double corporate_3ph_63;
+        static double corporate_3ph_128;
+        static double usage_fee;
 };
 #endif

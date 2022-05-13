@@ -1,6 +1,6 @@
 <diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;UMLNote&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;820&lt;/x&gt;&lt;y&gt;0&lt;/y&gt;&lt;w&gt;120&lt;/w&gt;&lt;h&gt;40&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;Csak teljesített 
 számlákat tartalmaz
-bg=yellow&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>95</x><y>742</y><w>370</w><h>550</h></coordinates><panel_attributes>Client
+bg=yellow&lt;/panel_attributes&gt;&lt;additional_attributes&gt;&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>95</x><y>725</y><w>370</w><h>550</h></coordinates><panel_attributes>Client
 --
 -id: int
 -Name: String
@@ -36,10 +36,10 @@ pendingInvoices Array&lt;Invoice&gt;
 #modify_electricMeter(): bool
 --
 Responsibilities
--- Pay Invoice</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>474</x><y>952</y><w>130</w><h>60</h></coordinates><panel_attributes>A villanyóraállást csak
+-- Pay Invoice</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>474</x><y>935</y><w>130</w><h>60</h></coordinates><panel_attributes>A villanyóraállást csak
 friend tagok tudják 
 módosítani.
-bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>804</x><y>542</y><w>210</w><h>200</h></coordinates><panel_attributes>Date
+bg=yellow</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>804</x><y>525</y><w>210</w><h>200</h></coordinates><panel_attributes>Date
 --
 -year: int
 -month: int
@@ -53,8 +53,8 @@ bg=yellow</panel_attributes><additional_attributes></additional_attributes></ele
 +operator==(Date&amp; rhs);
 +operator&lt;(Date&amp; rhs);
 +operator&gt;(Date&amp; rhs);
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>454</x><y>712</y><w>370</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;140;280;140;280;10;350;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>804</x><y>1052</y><w>310</w><h>140</h></coordinates><panel_attributes>Address
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>454</x><y>695</y><w>370</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;140;280;140;280;10;350;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>804</x><y>1035</y><w>310</w><h>140</h></coordinates><panel_attributes>Address
 --
 -town: String
 -street: String
@@ -63,11 +63,11 @@ m2=1</panel_attributes><additional_attributes>10;140;280;140;280;10;350;10</addi
 --
 +operator==(Address&amp; rhs):bool
 +operator&lt; &lt;(std::ostream&amp; os):os
-+Address(town: String, street: String, house: int, apt=0)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>454</x><y>1042</y><w>370</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;10;350;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>480</x><y>1192</y><w>260</w><h>70</h></coordinates><panel_attributes>Egy ügyfél lehet egyszerre kapcsolattartó 
++Address(town: String, street: String, house: int, apt=0)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>454</x><y>1025</y><w>370</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;10;350;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>480</x><y>1175</y><w>260</w><h>70</h></coordinates><panel_attributes>Egy ügyfél lehet egyszerre kapcsolattartó 
 és lakossági ügyfél is, lehet több
 ingatlanja is, emiatt többször is szerepelhet a nyilvántartásban. Erre szolgál a vevőazonosító (id).
-bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>533</x><y>492</y><w>260</w><h>170</h></coordinates><panel_attributes>Invoice
+bg=white</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>533</x><y>475</y><w>260</w><h>170</h></coordinates><panel_attributes>Invoice
 --
 -t: Tariffs&amp;s
 -created: Date
@@ -80,8 +80,8 @@ bg=white</panel_attributes><additional_attributes></additional_attributes></elem
 --
 Responsibilities
 -- Calculate amt. to be payed
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>780</x><y>482</y><w>80</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;10;50;10;50;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>372</y><w>230</w><h>100</h></coordinates><panel_attributes>Consumption_announcement
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>780</x><y>465</y><w>80</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;10;50;10;50;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>240</x><y>355</y><w>230</w><h>100</h></coordinates><panel_attributes>Consumption_announcement
 --
 -date: Date
 -electricMeterVal: int
@@ -89,21 +89,21 @@ m2=1</panel_attributes><additional_attributes>10;10;50;10;50;60</additional_attr
 getDate(): Date
 get_EM_val(): int
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>462</y><w>100</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>80;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>332</y><w>190</w><h>430</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;410;10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>702</y><w>30</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>652</y><w>120</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-&lt;&lt;friend&gt;&gt;</panel_attributes><additional_attributes>10;90;100;90;100;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>302</y><w>210</w><h>110</h></coordinates><panel_attributes>Tariffs
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>445</y><w>100</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>80;70;10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>315</y><w>190</w><h>430</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;410;10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>0</x><y>685</y><w>30</w><h>30</h></coordinates><panel_attributes></panel_attributes><additional_attributes>10;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>635</y><w>120</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
+&lt;&lt;friend&gt;&gt;</panel_attributes><additional_attributes>10;90;100;90;100;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>530</x><y>285</y><w>210</w><h>110</h></coordinates><panel_attributes>Tariffs
 --
 + VAT: static double
 + residental: static double
 + coportate: static double
 + usage_fee: static double
 --
-+ Tariffs(FILE* fp)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>402</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>462</y><w>470</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;10;440;10;440;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>260</x><y>611</y><w>210</w><h>30</h></coordinates><panel_attributes>PendingInvoices</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>631</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=0...k</panel_attributes><additional_attributes>10;10;70;11</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>331</y><w>70</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=0...n</panel_attributes><additional_attributes>30;10;30;250;50;251</additional_attributes></element><element><id>Relation</id><coordinates><x>302</x><y>631</y><w>40</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>51</x><y>190</y><w>230</w><h>140</h></coordinates><panel_attributes>template=T: Object
++ Tariffs(FILE* fp)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>385</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;.</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>445</y><w>470</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;10;440;10;440;80</additional_attributes></element><element><id>UMLClass</id><coordinates><x>260</x><y>594</y><w>210</w><h>30</h></coordinates><panel_attributes>PendingInvoices</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>614</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=0...k</panel_attributes><additional_attributes>10;10;70;11</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>314</y><w>70</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=0...n</panel_attributes><additional_attributes>30;10;30;250;50;251</additional_attributes></element><element><id>Relation</id><coordinates><x>302</x><y>614</y><w>40</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;110;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>51</x><y>173</y><w>230</w><h>140</h></coordinates><panel_attributes>template=T: Object
 Array
 --
 - elements: [T...n]
@@ -114,16 +114,16 @@ Array
 + isElement(T &amp;e const) const: bool
 + add(T &amp;e): void
 + travserse(func): void
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>312</x><y>312</y><w>210</w><h>30</h></coordinates><panel_attributes>InvoiceArray
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>241</x><y>282</y><w>140</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>312</x><y>295</y><w>210</w><h>30</h></coordinates><panel_attributes>InvoiceArray
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>241</x><y>265</y><w>140</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-
 «bind»
-&lt;T -&gt; invoice&gt;</panel_attributes><additional_attributes>10;20;120;20;120;30</additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>320</y><w>250</w><h>310</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;T -&gt; invoice&gt;</panel_attributes><additional_attributes>10;20;120;20;120;30</additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>303</y><w>250</w><h>310</h></coordinates><panel_attributes>lt=&lt;&lt;-
 «bind»
-&lt;T -&gt; invoice, n=k&gt;</panel_attributes><additional_attributes>10;10;10;240;230;240;230;290</additional_attributes></element><element><id>UMLClass</id><coordinates><x>142</x><y>120</y><w>100</w><h>30</h></coordinates><panel_attributes>Clients</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>120</y><w>100</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-
+&lt;T -&gt; invoice, n=k&gt;</panel_attributes><additional_attributes>10;10;10;240;230;240;230;290</additional_attributes></element><element><id>UMLClass</id><coordinates><x>142</x><y>103</y><w>100</w><h>30</h></coordinates><panel_attributes>Clients</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>112</x><y>103</y><w>100</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;-
 «bind»
-&lt;T -&gt; Client&gt;</panel_attributes><additional_attributes>10;80;10;10;30;10</additional_attributes></element><element><id>Relation</id><coordinates><x>176</x><y>430</y><w>90</w><h>330</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>70;12;10;10;10;310</additional_attributes></element><element><id>Relation</id><coordinates><x>36</x><y>80</y><w>280</w><h>760</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m2=0..n</panel_attributes><additional_attributes>260;19;10;20;10;730;60;730</additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>19</y><w>310</w><h>260</h></coordinates><panel_attributes>Controller
+&lt;T -&gt; Client&gt;</panel_attributes><additional_attributes>10;80;10;10;30;10</additional_attributes></element><element><id>Relation</id><coordinates><x>176</x><y>413</y><w>90</w><h>330</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>70;12;10;10;10;310</additional_attributes></element><element><id>Relation</id><coordinates><x>36</x><y>63</y><w>280</w><h>760</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes><additional_attributes>260;19;10;20;10;730;60;730</additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>2</y><w>310</w><h>260</h></coordinates><panel_attributes>Controller
 --
 - clients: Array&lt;Client&gt;
 - tariffs: Tariffs
@@ -143,8 +143,8 @@ consumption announcements
 -- Modifies Client's electric meter
 -- Manages and validates Client data
 -- Manage tariffs
--- Announce consumption</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>199</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=1</panel_attributes><additional_attributes>10;10;70;10;70;100</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>130</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>749</y><w>320</w><h>260</h></coordinates><panel_attributes>String
+-- Announce consumption</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>182</y><w>100</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=1</panel_attributes><additional_attributes>10;10;70;10;70;100</additional_attributes></element><element><id>Relation</id><coordinates><x>230</x><y>113</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>732</y><w>320</w><h>260</h></coordinates><panel_attributes>String
 --
 -pData: char *
 -len: size_t
@@ -161,6 +161,6 @@ m2=1</panel_attributes><additional_attributes>10;10;70;10;70;100</additional_att
 +operator[](unsigned int idx) const: const char&amp;;
 
 +size(): size_t
-+c_str(): const char*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>999</y><w>40</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
-m2=2</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>899</y><w>370</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
++c_str(): const char*</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>960</x><y>982</y><w>40</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=2</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>882</y><w>370</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m2=3</panel_attributes><additional_attributes>10;10;350;10</additional_attributes></element></diagram>

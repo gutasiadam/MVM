@@ -7,7 +7,6 @@
  */
 
 #include "Date.h"
-#include "Tariffs.h"
 #include "Consumption_announcement.h"
 
 
@@ -19,11 +18,12 @@ class Invoice{
         double toBePaid;
         
     public:
-        Invoice() : toBePaid(0), consumptionAmt(0){}; // Default ctor, Array-be rendezés miatt.
+        Invoice() : consumptionAmt(0), toBePaid(0){}; // Default ctor, Array-be rendezés miatt.
         Invoice(Date c, Consumption_announcement& cAnnounce): created(c), 
         announcement(cAnnounce), consumptionAmt(cAnnounce.get_EM_val()), toBePaid(0) {};
-        double calculate_toBePaid(Tariffs& t); // Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás
+        
         void set_toBePaid(double what){toBePaid=what;}
+        int getConsumptionAmt() const;
         double get_toBePaid() const;
 };
 

@@ -5,6 +5,7 @@
  */
 
 #include "Controller.h"
+#include "math.h"
 //#include "memtrace.h"
 
 void Controller::loadData(char const* CData, char const* Invoices, char const* Invoices_pending){
@@ -38,9 +39,13 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
     for(size_t i=0;i<clientsCount();i++){
         std::cout << clients[i].getId() <<" ";
     }
+
+
     Date tmp_tst_born(2002,11,26);
 	Address tmp_address_t("Budapest","Alma",27,1);
     Client tmpClient_t(31,"Test", "Elek",tmp_tst_born,tmp_address_t,"069245743","jajaj@gmail.com","077732832-0030",0,3,32);
+
+
     clients.add(tmpClient_t);
     ClientsDat.close();
     std::cout << "ClientDat done" << std::endl;
@@ -69,6 +74,21 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
     std::cout << "Invoicedat done" << std::endl;
     InvoicesDat.close();
 
+    // Tarifák betöltése
+    std::ifstream TarfiffsDat("Tariffs.txt");
+    while(!TarfiffsDat.eof()){
+        TarfiffsDat >> Tariffs::residental_16;
+        TarfiffsDat >> Tariffs::residental_32;
+        TarfiffsDat >> Tariffs::corporate_2ph_32;
+        TarfiffsDat >> Tariffs::corporate_2ph_63;
+        TarfiffsDat >> Tariffs::corporate_2ph_128;
+        TarfiffsDat >> Tariffs::corporate_3ph_32;
+        TarfiffsDat >> Tariffs::corporate_3ph_63;
+        TarfiffsDat >> Tariffs::corporate_3ph_128;
+        TarfiffsDat >> Tariffs::usage_fee;
+    }
+    TarfiffsDat.close();
+    
     std::ifstream Invoices_pending_Dat(Invoices_pending);
     while(!Invoices_pending_Dat.eof()){
         int id;
@@ -78,9 +98,9 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
 
         Invoices_pending_Dat >> id >> Y >> M >> D >> consumptionAmt >> toBePaid;
-        if(id==30){
+        /*if(id==30){
             continue; //Segfaultol, valahol rossz cimre probalok irni.
-        }
+        }*/
         //Gyors, ideiglenes teszt az adat hovakerülésének ellenőezésére.
         //std::cout << clients[id].getName() << Y << M << D << consumptionAmt << toBePaid << std::endl;
         Date tmpDate(Y,M,D);
@@ -131,11 +151,105 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
 }
 
 void Controller::newClient(){
+    //TODO: pararméteresre átalakítani
     Date tmp_tst_born(2002,11,26);
 	Address tmp_address_t("Budapest","Almaa",27,1);
     Client tmpClient_t(32,"Test", "Elek 2 ",tmp_tst_born,tmp_address_t,"06945743","jajaj@gmail.com","077832-0030",0,3,32);
     clients.add(tmpClient_t);
 }
+
+double Controller::calculate_toBePaid(Client& c){
+    std::cout << "Fizetendő számolása..." << std::endl;
+	// Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás
+	if(c.getType()==0){ // lakossági
+        if(c.getStrength()==16){
+            return log2(c.getStrength()*Tariffs::residental_16*
+            c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+        }else{
+            return log2(c.getStrength()*Tariffs::residental_32*
+            c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+        }
+    }else{ // vállalati
+    switch(c.getPhases()){
+        default:
+            if(c.getStrength()==32){
+                return log2(c.getStrength()*Tariffs::corporate_2ph_32*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }else if(c.getStrength()==63){
+                return log2(c.getStrength()*Tariffs::corporate_2ph_63*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }else{ // 128A
+                return log2(c.getStrength()*Tariffs::corporate_2ph_128*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }
+            break;
+        case 3:
+            if(c.getStrength()==32){
+                return log2(c.getStrength()*Tariffs::corporate_3ph_32*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }else if(c.getStrength()==63){
+                return log2(c.getStrength()*Tariffs::corporate_3ph_63*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }else{ // 128A
+                return log2(c.getStrength()*Tariffs::corporate_3ph_128*
+                c.pendingInvoices.end()->getConsumptionAmt())+Tariffs::usage_fee;
+            }
+            break;
+    }
+    }
+    
+}
+
+void Controller::create_Invoices(Date& todayDate){
+    std::cout << "Kezdődjön a számolás" << std::endl;
+    /**
+	 * Minden egyes kliensre meghívódik:
+	 * 	1. Ha van az ügyfélnek fogyasztási bejelentése az időszakra, akkor ez alapján számoljunk!
+	 * 	2. Ha nincs, akkor az archivált számlák alapján határozzunk meg egy átlagot, majd ennek vegyük a fogyasztását, 
+	 * az órájukat is az átlag szerint toljuk tovább.
+	 *	3. Ha nem volt még archivált számlája ( új ügyfél ), akkor 10 000 HUF értékű késedelmi díjat 
+     (büntetést) kell fizetnie. A fogyasztása a számlán 0-t fog mutatni, a teljesített óraállása sem fog előrébb haladni.
+	 */
+    for(Client* it=clients.begin();it!=clients.end();it++){ // Minden egyes Ügyfélre.
+        if(it->announcement.get_EM_val()!=-1){ // ekkor van fogyasztási bejelentés
+            std::cout << it->getId() << " - van bejelentés";
+            Invoice clientInvoice(todayDate,it->announcement);
+
+            this->calculate_toBePaid(*it);
+            it->pendingInvoices.add(clientInvoice);
+
+            
+        }else{ // Ekkor nincs bejelentés, átlagolni kell.
+            std::cout << it->getId() << " - nincs bejelentés";
+            Invoice* invoiceptr=it->archivedInvoices.begin();
+            Invoice* invend=it->archivedInvoices.end();
+
+            //Ha van archivált számla.
+            if(invoiceptr!=invend){
+                std::cout << "Van archivált számla.";
+                int s=0; int n=0;
+                for(invoiceptr;invoiceptr!=invend;invoiceptr++,n++){
+                    s+=invoiceptr->getConsumptionAmt();
+                }
+                double avg=(s/n);
+                Consumption_announcement tmpAnnounce(todayDate,avg);
+                Invoice clientInvoice(todayDate,tmpAnnounce);
+                it->pendingInvoices.add(clientInvoice);
+            }
+            //Ha nincs archivált számla:
+            else{
+                std::cout << "Nincs archivált számla.";
+                Consumption_announcement tmpAnnounce(todayDate,0);
+                Invoice clientInvoice(todayDate,tmpAnnounce);
+                clientInvoice.set_toBePaid(10000);
+                it->pendingInvoices.add(clientInvoice);
+            }
+        }// nincs fogyasztási bejelentés blokk.
+        std::cout << "befizetésre váró számlák: " << it->pendingInvoices.size() << std::endl;
+    } // minden egyes ügyfél blokk
+}
+
+
 
 ///TODO: Clients getclient név alapján megírása
 /*Client& Controller::getClient(String& name){

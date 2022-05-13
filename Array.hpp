@@ -51,10 +51,10 @@ class Array{
         }
         
         T* begin() const{
-            return &data[0];
+            return data;
         }
         T* end() const{
-            return &data[used-1];
+            return data+used;
         }
 
         //int értékkel tér vissza, attól függően, 
@@ -85,7 +85,7 @@ class Array{
             // Legutolsó elem már nem másolandó, hiszen előbbre került.
             used-= 1;
             T* tmp=new T[used];
-            for(size_t e;e<used;e++){
+            for(size_t e=0;e<used;e++){
                 tmp[e]=data[e];
             }
             delete[] data;
@@ -137,7 +137,8 @@ class Array{
 
         Array& operator=(const Array& rhs){
             used=rhs.size();
-            delete[] data; new T[used];
+            delete[] data; 
+            data= new T[used];
             for(size_t i=0;i<used;i++){
                 data[i]=rhs[i];
             }

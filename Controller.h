@@ -26,12 +26,14 @@ class Controller {
         void loadData(char const* CData, char const* Invoices, char const* Invoices_pending);
         void saveData(char const* CData, char const* Invoices, char const* Invoices_pending);
 
-        void create_Invoices(); // Számlázi időszak lezártával lefutó folyamat.
+        void create_Invoices(Date& todayDate); // Számlázi időszak lezártával lefutó folyamat.
         void create_Invoice();
         void newClient();
         void announceConsumption(Client&c,int emVal);
         Client& getClient(int id);
         Client& getClient(String& name);
+
+        double calculate_toBePaid(Client& c); 
 
         int clientsCount();
         

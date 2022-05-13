@@ -28,14 +28,15 @@
 //#include "memtrace.h"
 #include "Controller.h"
 #include "Array.hpp"
+#define DEBUG 1
 
 template <typename T>
 void debug(std::ostream& os, T message){
     #ifdef DEBUG
-        os << msg << std::flush
-    #endif DEBUG
+        os << message << std::flush;
+    #endif //DEBUG makró
 }
-#define DEBUG 1
+
 
 
 Client add_newClient(Controller& Ctrl, int incr){
@@ -84,6 +85,7 @@ Client add_newClient(Controller& Ctrl, int incr){
 
 
 int main(void){
+	Date todayDate(2022,5,13);
 	std::cout << "Meseországi Villamos Művek" << std::endl;
 	//Menü, amíg ki nem lép a felhasználó
 	std::ofstream log("log.log");
@@ -110,7 +112,7 @@ int main(void){
 			case 1:
 				std::cout << "=== Új Ügyfél felvétele ===" << std::endl;
 				//TODO: megoldani az elem hozzáadása során keletkező problémát.
-				//Ctrl.newClient();
+				Ctrl.newClient();
 				break;
 			case 2:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
@@ -150,14 +152,8 @@ int main(void){
 				break;
 			case 6:
 				std::cout << " A számlázási időszak lezárul. Számlák kiírása" << std::endl;
-				/**
-				 * Minden egyes kliensre meghívódik:
-				 * 	1. Ha van az ügyfélnek fogyasztási bejelentése az időszakra, akkor ez alapján számoljunk!
-				 * 	2. Ha nincs, akkor az archivált számlák alapján határozzunk meg egy átlagot, majd ennek vegyük a fogyasztását, 
-				 * az órájukat is az átlag szerint toljuk tovább.
-				 *	3. Ha nem volt még archivált számlája ( új ügyfél ), akkor kapjon az összes ügyfél ezen számlázási 
-				 időszakból vett fogyasztás szerinti átlagát, és ennek az összegéz fizesse.
-				 */
+				Ctrl.create_Invoices(todayDate);
+				std::cout << "Hol áll meg???" << std::endl;
 			case 7:
 				goto exit;
 				break;
