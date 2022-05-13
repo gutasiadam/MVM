@@ -55,6 +55,7 @@ String& String::operator=(const String& a){
     }
     return *this;
     }
+
 String String::operator+(const String& rhs_s) const{
     String tmp(this->len+rhs_s.size());
     strcpy(tmp.pData,this->pData);

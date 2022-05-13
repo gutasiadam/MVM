@@ -28,7 +28,7 @@ class Controller {
 
         void create_Invoices(Date& todayDate); // Számlázi időszak lezártával lefutó folyamat.
         void create_Invoice();
-        void newClient();
+        void newClient(Client& c);
         void announceConsumption(Client&c,int emVal);
         Client& getClient(int id);
         Client& getClient(String& name);

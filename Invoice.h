@@ -22,9 +22,13 @@ class Invoice{
         Invoice(Date c, Consumption_announcement& cAnnounce): created(c), 
         announcement(cAnnounce), consumptionAmt(cAnnounce.get_EM_val()), toBePaid(0) {};
         
-        void set_toBePaid(double what){toBePaid=what;}
+        Date& getCreated();
+        Consumption_announcement& getCAnn();
+        void set_toBePaid(double what){this->toBePaid=what;}
         int getConsumptionAmt() const;
         double get_toBePaid() const;
+
+        bool operator==(Invoice& rhs);
 };
 
 #endif

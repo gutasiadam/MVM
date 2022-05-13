@@ -29,7 +29,7 @@ class Array{
 
         //hozzáad egy elemet a tömbhöz.
         void add(T& newElement){ 
-            std::cout << "Add indul, tömb mérete: " << this->used << std::endl;
+            //std::cout << "Add indul, tömb mérete: " << this->used << std::endl;
             T* tmp=new T[this->used+1]; // Itt akad el, ha hozzá akar adni új elemet. Miért?
             for(size_t i=0;i<this->used;i++){
                 tmp[i]=this->data[i];
@@ -61,8 +61,9 @@ class Array{
         //hogy egy adott elem hol van benne, van-e a tömbben.
         ///@return -1, ha nincs benne, a szám indexét, ha benne van.
         int isElement(T& e) const{
-                for (size_t i=0; i<used; i++) {
-                    if ((data[i]==e)) {
+                int i=0;
+                for (T* dat=begin(); dat!=end(); dat++,i++) {
+                    if ((*dat==e)) {
                         return i;
                     }
                 return -1;

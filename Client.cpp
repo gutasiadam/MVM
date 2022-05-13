@@ -59,17 +59,16 @@ int Client::getElectricMeterVal() const{
 void Client::pay_Pending_Invoices(){
     std::cout << "Fizessük be" << std::endl;
 	
-    double funds=balance;
     std::cout << "Archivált számlák (db) :" << archivedInvoices.size() << std::endl;
     std::cout << "Befizetésre váró számlák (db) :" << pendingInvoices.size() << std::endl;
-    for(size_t i=0;i<=pendingInvoices.size()-1;i++){
-        if(funds>=pendingInvoices[i].get_toBePaid()){
+    for(Invoice *i=pendingInvoices.begin();i!=pendingInvoices.end();i++){
+        if(balance>=i->get_toBePaid()){
             // A számla teljesíthető!
             std::cout << "A számlát sikerült teljesíteni!" << std::endl;
-            funds-=pendingInvoices[i].get_toBePaid();
+            balance-=i->get_toBePaid();
             // A számlát átmozgatjuk az archiváltak közé.
-            archivedInvoices.add(pendingInvoices[i]);
-            pendingInvoices.del(i);
+            archivedInvoices.add(*(i));
+            pendingInvoices.del(*(i));
         }else{
             std::cout << "Nincs teljesítésre elegendő fedezet." << std::endl; // Nincs elég fedezet, mivel sorrendben haladunk, a többi számlát meg se nézzük.
             break;

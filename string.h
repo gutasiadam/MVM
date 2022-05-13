@@ -100,7 +100,7 @@ public:
 /// @param is - istream típusú objektum
 /// @param s0 - String, amibe beolvas
 /// @return is
-//std::istream& operator>>(std::istream& is, String& s0);
+//std::istream& operator>>(std::istream& is, String& s0){}
 
 /// Karakterhez sztringet fűz
 /// @param ch - karakter

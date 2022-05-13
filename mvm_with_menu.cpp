@@ -39,9 +39,9 @@ void debug(std::ostream& os, T message){
 
 
 
-Client add_newClient(Controller& Ctrl, int incr){
+void add_newClient(Controller& Ctrl, int incr){
 	// Kérje be a szükséges adatokat...
-	/*std::cout << "==== Új Ügyfél ====";
+	std:: cout << "!- Az adatokat ékezet nélkül kell beírni -!" << std::endl;
 	int bal=0;
 	std::cout << " Kezőegyenleg: "; std::cin >> bal;
 	char firstName[51]; char lastName[51];
@@ -52,35 +52,30 @@ Client add_newClient(Controller& Ctrl, int incr){
 	char e_mail[51];
 	std::cout << " E-mail cím: "; std::cin >> e_mail; //TODO: regexes validálás
     char City[31];
-	std::cout << " Város "; std::cin >> e_mail;
-    char street[101];
+	std::cout << " Város: "; std::cin >> e_mail;
+	char street[101];
 	std::cout << " Utca "; std::cin >> street;
+	//std::cout << " Utca: "; std::cin >> street;
 	int houseNum;
-	std::cout << " Házszám "; std::cin >> e_mail;
+	std::cout << " Házszám: "; std::cin >> std::skipws >> houseNum;
 	int aptNum=1;
-	std::cout << " Lakás száma (hagyja üresen, ha csak egylakásos a szám) "; std::cin >> e_mail;
+	std::cout << " Lakás száma (1, ha egylakásos a ház): "; std::cin >> aptNum;
 	char taxNum[13];
-	std::cout << " Adószám "; std::cin >> taxNum;
+	std::cout << " Adószám: "; std::cin >> taxNum;
     bool type;
-	std::cout << " Ügyfél típusa (0: lakossági, 1: vállalti) "; std::cin >> type;
+	std::cout << " Ügyfél típusa (0: lakossági | 1: vállalti): "; std::cin >> type;
     int Y; int M; int D;
-	std::cout << " Születési dátum (É H N) "; std::cin >> Y >> M >> D;
+	std::cout << " Születési dátum (É H N): "; std::cin >> Y >> M >> D;
     int phases;
-	std::cout << " Fázisok száma "; std::cin >> phases;
+	std::cout << " Fázisok száma: "; std::cin >> phases;
 	int strength;
-	std::cout << " Főbiztosíték erőssége  "; std::cin >> strength;*/
+	std::cout << " Főbiztosíték erőssége: "; std::cin >> strength;
 	//Létrehozzuk az Ügyfelet, majd eltároljuk
-	//Date tmp_born(Y,M,D);
-	//String ln(lastName); String fn(firstName);
-	//Address tmp_address(String(City),String(street),houseNum,aptNum);
-	//Client tmpClient(incr, ln, fn,tmp_born,tmp_address,String(mobileNum),String(e_mail),String(taxNum),type,phases,strength);
-	Date tmp_tst_born(2002,11,26);
-	Address tmp_address_t("Budapest","Alma",27,1);
-	Client tmpClient_t(incr,"Test", "Elek",tmp_tst_born,tmp_address_t,"069245743","jajaj@gmail.com","077732832-0030",0,3,32);
-    tmpClient_t.addFunds(400);
-	std::cout << "Elfut idáig??";
-	return tmpClient_t;
-    
+	Date tmp_born(Y,M,D);
+	String ln(lastName); String fn(firstName);
+	Address tmp_address(String(City),String(street),houseNum,aptNum);
+	Client tmpClient(incr, ln, fn,tmp_born,tmp_address,String(mobileNum),String(e_mail),String(taxNum),type,phases,strength);
+	Ctrl.newClient(tmpClient);
 }
 
 
@@ -111,8 +106,7 @@ int main(void){
 		switch(option){
 			case 1:
 				std::cout << "=== Új Ügyfél felvétele ===" << std::endl;
-				//TODO: megoldani az elem hozzáadása során keletkező problémát.
-				Ctrl.newClient();
+				add_newClient(Ctrl,Ctrl.clientsCount());
 				break;
 			case 2:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
@@ -126,7 +120,7 @@ int main(void){
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
 				double val;
 				std::cout << "> "; std::cin >> id;
-				std::cout << "Egyenleg feltöltése " << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << "Számára." << std::endl;
+				std::cout << "Egyenleg feltöltése " << Ctrl.getClient(id).getlastName() << " " << Ctrl.getClient(id).getfirstName() << "Számára." << std::endl;
 				std::cout << "Összeg: "; std::cin >> val;
 				Ctrl.getClient(id).addFunds(val);
 				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") új egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
@@ -165,7 +159,7 @@ int main(void){
 	exit: 
 	///Perzisztencia - adatok kimentése az eredeti fájljaikba.
 	///TODO: Ha teljesen jó a mentés, akkor az igazi fájlnevek használata.
-	Ctrl.saveData("TSTClientdata.txt", "TSTInvoices_archived.txt", "TSTInvoices_pending.txt");
+	Ctrl.saveData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt");
 	log.close();
 
 

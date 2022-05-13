@@ -19,5 +19,7 @@ class Consumption_announcement{
         Date& getDate();
         int get_EM_val();
 
+        bool operator==(Consumption_announcement& rhs);
+
 };
 #endif

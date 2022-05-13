@@ -9,7 +9,9 @@
 //#include "memtrace.h"
 
 void Controller::loadData(char const* CData, char const* Invoices, char const* Invoices_pending){
-    // Először az ügyfelek adatait töltjük be.
+    /**
+     * Ügyfelek adatainak betölése
+     */
     std::ifstream ClientsDat(CData);
 	while(!ClientsDat.eof()){
         int id;
@@ -43,13 +45,15 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
     Date tmp_tst_born(2002,11,26);
 	Address tmp_address_t("Budapest","Alma",27,1);
-    Client tmpClient_t(31,"Test", "Elek",tmp_tst_born,tmp_address_t,"069245743","jajaj@gmail.com","077732832-0030",0,3,32);
-
-
+    Client tmpClient_t(32,"Tett", "Elek",tmp_tst_born,tmp_address_t,"069245743","jajaj@gmail.com","077732832-0030",0,3,32);
     clients.add(tmpClient_t);
+    
     ClientsDat.close();
     std::cout << "ClientDat done" << std::endl;
-    //debug(std::cout, "ClientDat done.");
+    
+    /**
+     * Számlák betölése
+     */
     std::ifstream InvoicesDat(Invoices);
     while(!InvoicesDat.eof()){
         int id;
@@ -59,22 +63,22 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
 
         InvoicesDat >> id >> Y >> M >> D >> consumptionAmt >> toBePaid;
-        if(id==30){
-            continue; //Segfaultol, valahol rossz cimre probalok irni.
-        }
-        //Gyors, ideiglenes teszt az adat hovakerülésének ellenőezésére.
-        //std::cout << clients[id].getName() << Y << M << D << consumptionAmt << toBePaid << std::endl;
         Date tmpDate(Y,M,D);
         Consumption_announcement tmpCAnnounce(tmpDate,consumptionAmt);
         Invoice tmpInvoice(tmpDate,tmpCAnnounce);
-        std::cout <<  clients[id].getId() << " - Számla hozzáadása" << std::endl;
-        clients[id].archivedInvoices.add(tmpInvoice);
-        clients[id].modify_electricMeter(tmpCAnnounce.get_EM_val()); // Óraállást pörgeti, ahogy töltődnek be az adatok.
+        tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
+        //std::cout <<  clients[id].getId() << " - Számla hozzáadása" << std::endl;
+        clients[id-1].archivedInvoices.add(tmpInvoice);
+
+        // Óraállást pörgeti, ahogy töltődnek be az adatok.
+        clients[id-1].modify_electricMeter(tmpCAnnounce.get_EM_val()); 
     }
     std::cout << "Invoicedat done" << std::endl;
     InvoicesDat.close();
 
-    // Tarifák betöltése
+    /**
+     * Számlák betölése
+     */
     std::ifstream TarfiffsDat("Tariffs.txt");
     while(!TarfiffsDat.eof()){
         TarfiffsDat >> Tariffs::residental_16;
@@ -89,6 +93,22 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
     }
     TarfiffsDat.close();
     
+    /**
+     * Fogyasztási bejelentések betöltése
+     */
+    //TODO: mérőóra-állások kiszámolása. Amyg nincs kész nem tölthet be a consumption ann.
+    /*std::ifstream Consumption_ann_Dat("Consumption_announcements.txt");
+    while(!Consumption_ann_Dat.eof()){
+        int id; int Y;int M; int D; int emVal;
+        Consumption_ann_Dat >> id >> Y >> M >> D >> emVal;
+        Date tmpDate(Y,M,D);
+        Consumption_announcement tmpAnnounce(tmpDate,emVal);
+        clients[id].announcement=tmpAnnounce;
+    }*/
+
+    /**
+     * Befizetésre váró számlák betöltése
+     */
     std::ifstream Invoices_pending_Dat(Invoices_pending);
     while(!Invoices_pending_Dat.eof()){
         int id;
@@ -118,7 +138,7 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
     // Először az ügyfelek adatait töltjük be.
     std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_p);
     std::cout << "Clients mérete:" << clients.size() << std::endl;
-    for(Client* ptr=clients.begin(); ptr <= clients.end(); ptr++){
+    for(Client* ptr=clients.begin(); ptr != clients.end(); ptr++){
         // Átfutunk a kliens adatán, kiírjuk..
         // Todo: név szeparálása!
         ClientsDat << ptr->getId()
@@ -127,19 +147,35 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
         << '\t' << ptr->getTN() 
         << '\t' << ptr->getAddress().getTown() << '\t' << ptr->getAddress().getStreet() 
         << '\t' << ptr->getAddress().getHouse() << '\t' << ptr->getAddress().getApartment() 
-        << '\t' << ptr->getPhoneNumber() << '\t' << ptr->getEMail() << ptr->getType() 
-        << '\t'  << ptr->getDate().getYear()<< '\t' << ptr->getDate().getMonth()  
+        << '\t' << ptr->getPhoneNumber() << '\t' << ptr->getEMail() << '\t' << ptr->getType() 
+        << '\t' << ptr->getDate().getYear()<< '\t' << ptr->getDate().getMonth()  
         << '\t' << ptr->getDate().getDay() << '\t' << ptr->getPhases() 
         << '\t' << ptr->getStrength() << '\t' << ptr->getBalance() << '\n';
 
-
         
-        ///TODO: Archivált számlák kiírása
-        //Aztán az archivált számláin...
+        //Aztán az archivált számlákat írjuk ki...
+        for(Invoice* archived=ptr->archivedInvoices.begin();
+        archived != ptr->archivedInvoices.end(); archived++){
+            Invoices_archived << ptr->getId()
+            << '\t' << archived->getCreated().getYear()
+            << '\t' << archived->getCreated().getMonth()
+            << '\t' << archived->getCreated().getDay()
+            << '\t' << archived->getConsumptionAmt()
+            << '\t' << archived->get_toBePaid() << '\n';
+        }
 
-        ///TODO: Befizetésre váró, pending számlák kiírása
-        //Majd a befizetésre váró számláin...
 
+        //Majd a befizetésre váró számlákat ítjuk ki...
+
+        for(Invoice* archived=ptr->pendingInvoices.begin();
+        archived != ptr->pendingInvoices.end(); archived++){
+            Invoices_pending << ptr->getId()
+            << '\t' << archived->getCreated().getYear()
+            << '\t' << archived->getCreated().getMonth()
+            << '\t' << archived->getCreated().getDay()
+            << '\t' << archived->getConsumptionAmt()
+            << '\t' << archived->get_toBePaid() << '\n';
+        }
 
     }
     ClientsDat.close();
@@ -150,12 +186,12 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
     
 }
 
-void Controller::newClient(){
+void Controller::newClient(Client& c){
     //TODO: pararméteresre átalakítani
-    Date tmp_tst_born(2002,11,26);
+    /*Date tmp_tst_born(2002,11,26);
 	Address tmp_address_t("Budapest","Almaa",27,1);
-    Client tmpClient_t(32,"Test", "Elek 2 ",tmp_tst_born,tmp_address_t,"06945743","jajaj@gmail.com","077832-0030",0,3,32);
-    clients.add(tmpClient_t);
+    Client tmpClient_t(32,"Test", "Elek 2 ",tmp_tst_born,tmp_address_t,"06945743","jajaj@gmail.com","077832-0030",0,3,32);*/
+    clients.add(c);
 }
 
 double Controller::calculate_toBePaid(Client& c){

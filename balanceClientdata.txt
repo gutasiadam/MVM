@@ -28,3 +28,5 @@
 28	Balazs	Katinka	1483555-9-85	Budapest	Gabor	44	1	+36-19-054-6968	flora67@fulop.info	0	1954	8	3	2	32	0
 29	Tamas	Mia	6311502-9-47	Szekesfehervar	Sara	5	1	+36-46-615-0722	albert09@simon.com	0	1992	9	29	2	32	0
 30	Hegedüs	Noel	9030284-9-60	Budapest	Major	17	23	+36-87-854-6988	tpap@hegedus.com	1	1977	7	17	3	63	100
+32	Tett	Elek	077732832-0030	Budapest	Alma	27	1	069245743	jajaj@gmail.com	0	2002	11	26	3	32	0
+30	Gutasi	Adam	77-6482894		Madarasz	27	23	06209245743	Budapest	0	2002	11	26	1	32	0
