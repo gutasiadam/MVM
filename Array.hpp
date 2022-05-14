@@ -15,7 +15,6 @@ class Array{
             data=new T[used];
         }
         virtual ~Array(){
-            std::cout << "Array dtor - Siz: " << used << std::endl;
             delete[] data;
         }
 
@@ -26,7 +25,6 @@ class Array{
                 tmp[i]=this->data[i];
             }
         tmp[this->used]=newElement;
-        std::cout << "pukk";
         delete[] this->data;
         this->data=tmp;
         used++; // használt méret nő eggyel.
@@ -72,20 +70,15 @@ class Array{
         void del(size_t indx){
             //TODO A törlés nem működik rendesen!
             //Indexelési hiba esetén dobjon kivételt
-            std::cout << "Array: törlés! - index: " << indx << " | used: " << used <<std::endl;
             if(indx>=used){throw(std::out_of_range("Indexelesi hiba - del"));}
             T* tmp= new T[used-1]; size_t tmpAt=0;
             for(size_t pos=0;pos<used;pos++){
                 if(pos!=indx){
-                    std::cout << pos << " másolása az új tempbe" << std::endl;
                     tmp[tmpAt++]=data[pos];
                 }
             }
-            std::cout << "Új pending méret: " << tmpAt << std::endl;
             used--;
-            std::cout << "pukk" << std::endl;
             //delete[] this->data;
-            std::cout << "; add" << std::endl;
             this->data=tmp;
 
 

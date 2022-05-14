@@ -118,7 +118,7 @@ Client& Client::operator=(Client& rhs){ // másoló operátor
         }
 
 void Client::modify_electricMeter(int amt){
-	electricMeter_last+=amt;
+	electricMeter_last=amt;
 }
 
 double Client::getDebtval() const{

@@ -14,9 +14,10 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
      * Ügyfelek adatainak betölése
      */
     std::ifstream ClientsDat(CData);
+    ClientsDat.setf(std::ios::fixed); ClientsDat.setf(std::ios::showpoint); ClientsDat.precision(2);
 	int id=-1;
     while(ClientsDat>>id){ //Elkerüljük az utolsó sor duplikálását.
-        int balance;
+        double balance=0;
         char firstName[51];
         char lastName[51];
         char mobileNum[21];
@@ -31,7 +32,8 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 		int strength;
         char e_mail[51];
         ClientsDat >> lastName >> firstName >> taxNum >> City >> street >> houseNum >> aptNum >> mobileNum >> e_mail >> type >> Y >> M >> D >> phases >> strength >> balance;
-        std::cout << "id:" << id << " lastName: " << lastName <<  "firstName: "<< firstName << taxNum << City <<"str: " << street << "houseNum: " << houseNum << "aptNum: " << aptNum << " mobile: " << mobileNum << "email: " << e_mail << "type: " << type << "Y: " << Y << "M: " << M << "D: " << D << "phases: " << phases << "strength: " << strength << std::endl;
+        //std::cout << "id:" << id << " lastName: " << lastName <<  "firstName: "<< firstName << taxNum << City <<"str: " << street << "houseNum: " << houseNum << "aptNum: " << aptNum << " mobile: " << mobileNum << "email: " << e_mail << "type: " << type << "Y: " << Y << "M: " << M << "D: " << D << "phases: " << phases << "strength: " << strength << std::endl;
+        //std::cout << "id: " << id << "balance: " << balance << std::endl;
 		Date tmp_born(Y,M,D);
         String ln(lastName); String fn(firstName);
         Address tmp_address(String(City),String(street),houseNum,aptNum);
@@ -39,45 +41,49 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
         tmpClient.addFunds(balance); // Fájlban tárolt kezdőegyenleg tárolása -> bezáráskor frissül a fájlban.
         clients.add(tmpClient);
     }
-    for(size_t i=0;i<clientsCount();i++){
+    /*for(size_t i=0;i<clientsCount();i++){
         std::cout << clients[i].getId() <<" ";
-    }
+    }/*
     
     ClientsDat.close();
     std::cout << "ClientDat done - hossz: " << clientsCount() << std::endl;
     
     /**
-     * Számlák betölése
+     * Befizetett számlák betölése
      */
     std::ifstream InvoicesDat(Invoices);
+    InvoicesDat.setf(std::ios::fixed); InvoicesDat.setf(std::ios::showpoint); InvoicesDat.precision(2);
     id=0;
     while(InvoicesDat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int Y; int M; int D;
         int consumptionAmt;
         double toBePaid;
+        int emVal;
 
-        InvoicesDat >> Y >> M >> D >> consumptionAmt >> toBePaid;
-        std::cout << id << "\t" << Y << "\t" << M << "\t" << D << "\t" << consumptionAmt << "\t" << toBePaid;
+        InvoicesDat >> Y >> M >> D >> consumptionAmt >> toBePaid >> emVal;
+        std::cout << id << " \t" << Y << " \t" << M << " \t" << D << " \t" << consumptionAmt << " \t" << toBePaid << " \t" << emVal;
         InvoicesDat.ignore();
 
         Date tmpDate(Y,M,D);
-        Consumption_announcement tmpCAnnounce(tmpDate,consumptionAmt);
+        // A Consumption_announcement ÓRAÁLLÁST tárol!
+        Consumption_announcement tmpCAnnounce(tmpDate,emVal);
         Invoice tmpInvoice(tmpDate,tmpCAnnounce);
         tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
-        std::cout << "clients["<<id<<"].getId()" << std::endl;
-        std::cout << " " << clients[id-1].getId() << " - Számla hozzáadása" << std::endl;
+        //std::cout << "clients["<<id<<"].getId()" << std::endl;
+        //std::cout << " " << clients[id-1].getId() << " - Számla hozzáadása" << std::endl;
         clients[id-1].archivedInvoices.add(tmpInvoice);
 
         // Óraállást pörgeti, ahogy töltődnek be az adatok.
         clients[id-1].modify_electricMeter(tmpCAnnounce.get_EM_val()); 
     }
-    std::cout << "Invoicedat done" << std::endl;
+    //std::cout << "Invoicedat done" << std::endl;
     InvoicesDat.close();
 
     /**
-     * Számlák betölése
+     * Tarifák betölése
      */
     std::ifstream TarfiffsDat("Tariffs.txt");
+    TarfiffsDat.setf(std::ios::fixed); TarfiffsDat.setf(std::ios::showpoint); TarfiffsDat.precision(2);
     while(!TarfiffsDat.eof()){
         TarfiffsDat >> Tariffs::residental_16;
         TarfiffsDat >> Tariffs::residental_32;
@@ -106,25 +112,29 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
     /**
      * Befizetésre váró számlák betöltése
+     *  - befizetésre váró számlát a rendszer generál.
      */
     std::ifstream Invoices_pending_Dat(Invoices_pending);
+    Invoices_pending_Dat.setf(std::ios::fixed); Invoices_pending_Dat.setf(std::ios::showpoint); Invoices_pending_Dat.precision(2);
     while(Invoices_pending_Dat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int Y; int M; int D;
         int consumptionAmt;
         double toBePaid;
+        int emVal=0;
 
 
-        Invoices_pending_Dat >> Y >> M >> D >> consumptionAmt >> toBePaid;
+        Invoices_pending_Dat >> Y >> M >> D >> consumptionAmt >> toBePaid >> emVal;
         Invoices_pending_Dat.ignore();
 
         Date tmpDate(Y,M,D);
-        Consumption_announcement tmpCAnnounce(tmpDate,consumptionAmt);
+        Consumption_announcement tmpCAnnounce(tmpDate, emVal);
+
         Invoice tmpInvoice(tmpDate,tmpCAnnounce);
         tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
-        std::cout <<  clients[id-1].getId() << " - ";
-        std::cout << " fogy: "<<tmpInvoice.getConsumptionAmt() << " ";
+        //std::cout <<  clients[id-1].getId() << " - ";
+        //std::cout << " fogy: "<<tmpInvoice.getConsumptionAmt() << " ";
         clients[id-1].pendingInvoices.add(tmpInvoice);
-        std::cout <<  clients[id-1].pendingInvoices.size() << " méret" << std::endl;
+        //std::cout <<  clients[id-1].pendingInvoices.size() << " méret" << std::endl;
         if(Invoices_pending_Dat.eof()) break;
     }
     Invoices_pending_Dat.close();
@@ -140,7 +150,11 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 void Controller::saveData(char const* CData, char const* Invoices, char const* Invoices_p){
     // Először az ügyfelek adatait töltjük be.
     std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_p);
-    std::cout << "Clients mérete:" << clients.size() << std::endl;
+    ClientsDat.setf(std::ios::fixed); ClientsDat.setf(std::ios::showpoint); ClientsDat.precision(2);
+    Invoices_archived.setf(std::ios::fixed); Invoices_archived.setf(std::ios::showpoint); Invoices_archived.precision(2);
+    Invoices_pending.setf(std::ios::fixed); Invoices_pending.setf(std::ios::showpoint); Invoices_pending.precision(2);
+
+    //std::cout << "Clients mérete:" << clients.size() << std::endl;
     for(Client* ptr=clients.begin(); ptr != clients.end(); ptr++){
         // Átfutunk a kliens adatán, kiírjuk..
         // Todo: név szeparálása!
@@ -155,7 +169,6 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
         << '\t' << ptr->getDate().getDay() << '\t' << ptr->getPhases() 
         << '\t' << ptr->getStrength() << '\t' << ptr->getBalance() << '\n';
 
-        
         //Aztán az archivált számlákat írjuk ki...
         for(Invoice* archived=ptr->archivedInvoices.begin();
         archived != ptr->archivedInvoices.end(); archived++){
@@ -164,7 +177,8 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
             << '\t' << archived->getCreated().getMonth()
             << '\t' << archived->getCreated().getDay()
             << '\t' << archived->getConsumptionAmt()
-            << '\t' << archived->get_toBePaid() << '\n';
+            << '\t' << archived->get_toBePaid()
+            << '\t' << archived->getCAnn().get_EM_val() << '\n';
         }
 
 
@@ -176,7 +190,8 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
             << '\t' << archived->getCreated().getMonth()
             << '\t' << archived->getCreated().getDay()
             << '\t' << archived->getConsumptionAmt()
-            << '\t' << archived->get_toBePaid() << '\n';
+            << '\t' << archived->get_toBePaid()
+            << '\t' << archived->getCAnn().get_EM_val() << '\n';
         }
 
     }
