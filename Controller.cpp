@@ -8,11 +8,13 @@
 #include "Controller.h"
 #include "math.h"
 
-void Controller::loadData(char const* CData, char const* Invoices, char const* Invoices_pending){
+void Controller::loadData(char const* CData, char const* Invoices, 
+char const* Invoices_pending, char const* Tariffs, char const* CAnnFile){
     /**
      * Ügyfelek adatainak betölése
      */
     std::ifstream ClientsDat(CData);
+    debug(std::cout, "ClientData betöltése...");
     ClientsDat.setf(std::ios::fixed); ClientsDat.setf(std::ios::showpoint); ClientsDat.precision(2);
 	int id=-1;
     while(ClientsDat>>id){ //Elkerüljük az utolsó sor duplikálását.
@@ -31,8 +33,8 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 		int strength;
         char e_mail[51];
         ClientsDat >> lastName >> firstName >> taxNum >> City >> street >> houseNum >> aptNum >> mobileNum >> e_mail >> type >> Y >> M >> D >> phases >> strength >> balance;
-        //std::cout << "id:" << id << " lastName: " << lastName <<  "firstName: "<< firstName << taxNum << City <<"str: " << street << "houseNum: " << houseNum << "aptNum: " << aptNum << " mobile: " << mobileNum << "email: " << e_mail << "type: " << type << "Y: " << Y << "M: " << M << "D: " << D << "phases: " << phases << "strength: " << strength << std::endl;
-        //std::cout << "id: " << id << "balance: " << balance << std::endl;
+
+
 		Date tmp_born(Y,M,D);
         String ln(lastName); String fn(firstName);
         Address tmp_address(String(City),String(street),houseNum,aptNum);
@@ -40,17 +42,16 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
         tmpClient.addFunds(balance); // Fájlban tárolt kezdőegyenleg tárolása -> bezáráskor frissül a fájlban.
         clients.add(tmpClient);
     }
-    /*for(size_t i=0;i<clientsCount();i++){
-        std::cout << clients[i].getId() <<" ";
-    }*/
+
     
     ClientsDat.close();
-    debug(std::cout, "ClientDat done -hossz:");
+    debug(std::cout, "✅\n");
     debug(std::cout, clientsCount());
     
     /**
      * Befizetett számlák betölése
      */
+    debug(std::cout, "\nBefizetettek betöltése...");
     std::ifstream InvoicesDat(Invoices);
     InvoicesDat.setf(std::ios::fixed); InvoicesDat.setf(std::ios::showpoint); InvoicesDat.precision(2);
     id=0;
@@ -75,11 +76,12 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
     }
     //std::cout << "Invoicedat done" << std::endl;
     InvoicesDat.close();
-
+    debug(std::cout, "✅\n");
     /**
      * Tarifák betölése
      */
-    std::ifstream TarfiffsDat("Tariffs.txt");
+    debug(std::cout, "\nTarifák betöltése...");
+    std::ifstream TarfiffsDat(Tariffs);
     TarfiffsDat.setf(std::ios::fixed); TarfiffsDat.setf(std::ios::showpoint); TarfiffsDat.precision(2);
     while(!TarfiffsDat.eof()){
         TarfiffsDat >> Tariffs::residental_16;
@@ -92,26 +94,34 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
         TarfiffsDat >> Tariffs::corporate_3ph_128;
         TarfiffsDat >> Tariffs::usage_fee;
     }
+    debug(std::cout, "✅\n");
     TarfiffsDat.close();
     
     /**
      * Fogyasztási bejelentések betöltése
      */
-    //TODO: mérőóra-állások kiszámolása. Amyg nincs kész nem tölthet be a consumption ann.
-    /*std::ifstream Consumption_ann_Dat("Consumption_announcements.txt");
-    while(!Consumption_ann_Dat.eof()){
-        int id; int Y;int M; int D; int emVal;
-        Consumption_ann_Dat >> id >> Y >> M >> D >> emVal;
+    debug(std::cout, "Fogyasztási bejelentések betöltése....");
+    std::ifstream Consumption_ann_Dat(CAnnFile);
+    while(Consumption_ann_Dat>>id){ //Elkerüljük az utolsó sor duplikálását.
+        int Y;int M; int D; int emVal;
+        Consumption_ann_Dat >> Y >> M >> D >> emVal;
         Date tmpDate(Y,M,D);
         Consumption_announcement tmpAnnounce(tmpDate,emVal);
-        clients[id].announcement=tmpAnnounce;
-    }*/
+        clients[id-1].announcement=tmpAnnounce;
+        debug(std::cout,id);
+        debug(std::cout,": Bejelentett óraállás: ");
+        debug(std::cout, clients[id-1].announcement.get_EM_val());
+        debug(std::cout, "\n");
+    }
+    debug(std::cout, "✅\n");
+    Consumption_ann_Dat.close();
 
     /**
      * Befizetésre váró számlák betöltése
      *  - befizetésre váró számlát a rendszer generál.
      */
     std::ifstream Invoices_pending_Dat(Invoices_pending);
+    debug(std::cout,"\nFüggőben levő számlák betöltése...");
     Invoices_pending_Dat.setf(std::ios::fixed); Invoices_pending_Dat.setf(std::ios::showpoint); Invoices_pending_Dat.precision(2);
     while(Invoices_pending_Dat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int Y; int M; int D;
@@ -121,6 +131,8 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
 
         Invoices_pending_Dat >> Y >> M >> D >> consumptionAmt >> toBePaid >> emVal;
+        debug(std::cout,"id: "); debug(std::cout,id);
+        debug(std::cout," Ft: "); debug(std::cout,toBePaid);
         Invoices_pending_Dat.ignore();
 
         Date tmpDate(Y,M,D);
@@ -128,11 +140,12 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
 
         Invoice tmpInvoice(tmpDate,tmpCAnnounce,consumptionAmt);
         tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
-        //std::cout <<  clients[id-1].getId() << " - ";
+
         clients[id-1].pendingInvoices.add(tmpInvoice);
-        //std::cout <<  clients[id-1].pendingInvoices.size() << " méret" << std::endl;
+        debug(std::cout,"Tartozasok szama: "); debug(std::cout,clients[id-1].pendingInvoices.size());
         if(Invoices_pending_Dat.eof()) break;
     }
+    debug(std::cout,"✅\n");
     Invoices_pending_Dat.close();
 }
 
@@ -143,13 +156,14 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
  * @param Invoices Az archivált (befizetettt) számlákat tartalmazó szövegfájl.
  * @param Invoices_p A befizetésre váró számlákat tartalmazó szövegfájl.
  */
-void Controller::saveData(char const* CData, char const* Invoices, char const* Invoices_p){
+void Controller::saveData(char const* CData, char const* Invoices, 
+char const* Invoices_pending_file, char const* CAnnFile){
     // Először az ügyfelek adatait töltjük be.
-    std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_p);
+    std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_pending_file);
     ClientsDat.setf(std::ios::fixed); ClientsDat.setf(std::ios::showpoint); ClientsDat.precision(2);
     Invoices_archived.setf(std::ios::fixed); Invoices_archived.setf(std::ios::showpoint); Invoices_archived.precision(2);
     Invoices_pending.setf(std::ios::fixed); Invoices_pending.setf(std::ios::showpoint); Invoices_pending.precision(2);
-
+    std::ofstream Consumption_ann_Dat(CAnnFile);
     //std::cout << "Clients mérete:" << clients.size() << std::endl;
     for(Client* ptr=clients.begin(); ptr != clients.end(); ptr++){
         // Átfutunk a kliens adatán, kiírjuk..
@@ -190,11 +204,26 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
             << '\t' << pending->getCAnn().get_EM_val() << '\n';
         }
 
+
+        //Fogyasztási bejelentések kiírása.
+        {
+            // Ha -1, akkor friss számlázás volt, nincs mit kiírni.
+            if(ptr->announcement.get_EM_val()!=-1){
+                Consumption_ann_Dat << ptr->getId()
+                << '\t' << ptr->announcement.getDate().getYear()
+                << '\t' << ptr->announcement.getDate().getMonth()
+                << '\t' << ptr->announcement.getDate().getDay()
+                << '\t' << ptr->announcement.get_EM_val() << '\n';
+            }
+            
+        }
+
     }
     ClientsDat.close();
     Invoices_archived.close();
     Invoices_pending.close();
-    
+    Consumption_ann_Dat.close();
+    debug(std::cout, "Fájlok mentése kész.\n");
 }
 
 void Controller::newClient(Client& c){
@@ -203,8 +232,8 @@ void Controller::newClient(Client& c){
 
 double Controller::calculate_toBePaid(Client& c){
     int consumption=(c.pendingInvoices.end()-1)->getConsumptionAmt();
-    std::cout << "Fizetendő: " << consumption << "kWh" << std::endl;
-	// Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás
+    debug(std::cout,"Fizetendő: "); debug(std::cout,consumption); debug(std::cout,"kWh\n");
+	// Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás+alapdíj
     double endVal=0;
 	if(c.getType()==0){ // lakossági
         if(c.getStrength()==16){
@@ -242,7 +271,7 @@ double Controller::calculate_toBePaid(Client& c){
             break;
     }
     }
-    std::cout << endVal << " Ft." << std::endl;
+    debug(std::cout, endVal); debug(std::cout, " Ft.\n");
     return endVal;
 }
 
@@ -258,31 +287,43 @@ void Controller::create_Invoices(Date& todayDate){
 	 */
     for(Client* it=clients.begin();it!=clients.end();it++){ // Minden egyes Ügyfélre.
         if(it->announcement.get_EM_val()!=-1){ // ekkor van fogyasztási bejelentés
-            std::cout << it->getId() << " - 🟢 ";
+            debug(std::cout, it->getId());
+            debug(std::cout, " - 🟢 ");
+            debug(std::cout, "Bejelentett óraállás: ");
+            debug(std::cout, it->announcement.get_EM_val());
+            debug(std::cout, "\n");
             int consumption=it->announcement.get_EM_val() - it->getElectricMeterVal();
+            
             Invoice clientInvoice(todayDate,it->announcement,consumption);
+            debug(std::cout, "Fogyasztás:");
+            debug(std::cout, consumption);
+            debug(std::cout, "\n");
 
-            this->calculate_toBePaid(*it);
             it->pendingInvoices.add(clientInvoice);
+            double toBePaid=this->calculate_toBePaid(*(it));
+            (it->pendingInvoices.end()-1)->set_toBePaid(toBePaid);
 
             
         }else{ // Ekkor nincs bejelentés, átlagolni kell.
-            std::cout << it->getId() << " - 🟡 ";
+            debug(std::cout, "⭕️ Nincs bejelentés, átlagolni kell \n");
             Invoice* invoiceptr=it->archivedInvoices.begin();
             Invoice* invend=it->archivedInvoices.end();
 
             //Ha van archivált számla.
             if(invoiceptr!=invend){
-                std::cout << "🟡 " << std::endl;
+                debug(std::cout, "🟡 \n");
                 int s=0; int n=0;
                 for(;invoiceptr!=invend;invoiceptr++,n++){
                     s+=invoiceptr->getConsumptionAmt();
                     //std::cout << "\t " << s << '\t' << n << std::endl;
                 }
                 double avg=(s/(n+1));
-                std::cout << "\tátlag: (" << s << "/" << n+1 << ")= "<< avg << std::endl;
-                std::cout << "Óraállás: " << (invend-1)->getCAnn().get_EM_val()+avg 
-                << std::endl;
+
+                debug(std::cout, "átlag: ");
+                debug(std::cout, avg);
+                debug(std::cout, "\nÓraállás: ");
+                debug(std::cout, (invend-1)->getCAnn().get_EM_val()+avg);
+
                 Consumption_announcement tmpAnnounce(todayDate,
                 (invend-1)->getCAnn().get_EM_val()+avg);
                 Invoice clientInvoice(todayDate,tmpAnnounce,avg);
@@ -290,35 +331,43 @@ void Controller::create_Invoices(Date& todayDate){
                 double toBePaid=this->calculate_toBePaid(*(it));
                 
                 (it->pendingInvoices.end()-1)->set_toBePaid(toBePaid);
-                std::cout << "Fizetendő:" << (it->pendingInvoices.end()-1)->get_toBePaid();
+                debug(std::cout, "\nFizetendő: ");
+                debug(std::cout, (it->pendingInvoices.end()-1)->get_toBePaid());
             }
             //Ha nincs archivált számla:
             else{
-                std::cout << "🔴 ";
+                debug(std::cout, "🔴 Nincs archivált számla?\t");
+                debug(std::cout, it->archivedInvoices.size());
                 Consumption_announcement tmpAnnounce(todayDate,0);
                 Invoice clientInvoice(todayDate,tmpAnnounce,1);
                 clientInvoice.set_toBePaid(30000);
                 it->pendingInvoices.add(clientInvoice);
             }
         }// nincs fogyasztási bejelentés blokk.
-        std::cout << "befizetésre váró számlák: " << it->pendingInvoices.size() << std::endl;
+
+        debug(std::cout, "\nbefizetésre váró számlák:");
+        debug(std::cout, it->pendingInvoices.size());
+        debug(std::cout, "\n");
+        //Ne felejtsük el az előre bejelentett adatot törölni, hogy a bezáráskor törlődjön a rendszerből.
+        it->announcement.Reset();
     } // minden egyes ügyfél blokk
 }
 
-
-
-///TODO: Clients getclient név alapján megírása
-/*Client& Controller::getClient(String& name){
-    return clients[0];
-}*/
 Client& Controller::getClient(size_t id){
     if(id>clients.size()){
         throw std::out_of_range("Indexelési hiba!");
-        ///TODO: indexlési hiba elkapása
     }
     return clients[(id-1)];
 }
 
 size_t Controller::clientsCount(){
     return this->clients.size();
+}
+
+
+void Controller::announceConsumption(Client&c,int emVal, Date& d){
+    if(c.announcement.get_EM_val()==-1){
+        c.announcement=Consumption_announcement(d,emVal);
+    }
+    
 }

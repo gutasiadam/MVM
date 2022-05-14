@@ -29,6 +29,7 @@ public:
     /// C-sztringet ad vissza
     /// @return pinter egy '\0'-val lezárt (C) sztringre
     const char* c_str() const { return pData;}
+    char* c_str() { return pData;}
 
     /// Konstruktor egy size_t méretből
     String(size_t siz);
@@ -50,6 +51,7 @@ public:
     virtual ~String() { delete[] pData; }
 
     bool operator==(const String& rhs)const;
+
 
     /// Kiírunk egy Stringet (debug célokra)
     /// Előtte kiírunk egy tetszőleges szöveget.

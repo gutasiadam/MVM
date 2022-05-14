@@ -24,14 +24,7 @@ class Address{
         int getHouse(){return house;};
         int getApartment(){return apartment;};
 
-        bool operator==(Address& rhs){
-            if(town==rhs.getTown() && street==rhs.getStreet() 
-            && house==rhs.getHouse() && apartment==rhs.getApartment()){
-                return true;
-            }else{
-                return false;
-            }
-        };
+        bool operator==(Address& rhs);
         //friend std::ostream& operator<<(std::ostream& os, Address& a);
 };
 

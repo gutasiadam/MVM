@@ -19,6 +19,12 @@ class Consumption_announcement{
         Date& getDate();
         int get_EM_val();
 
+        /**
+         * @brief Visszaállítja a bejelentett óraállást -1 -re.
+         * @details -1 beállításával a menüből új fogyasztás jelenthető be.
+         */
+        void Reset();
+
         bool operator==(Consumption_announcement& rhs);
 
 };

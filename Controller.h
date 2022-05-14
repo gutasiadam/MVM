@@ -22,13 +22,13 @@ class Controller {
     public:
         Controller(){};
         //Controller(char const* CData, char const* Invoices){}
-        void loadData(char const* CData, char const* Invoices, char const* Invoices_pending);
-        void saveData(char const* CData, char const* Invoices, char const* Invoices_pending);
+        void loadData(char const* CData, char const* Invoices, char const* Invoices_pending, char const* Tariffs, char const* CAnnFile);
+        void saveData(char const* CData, char const* Invoices, char const* Invoices_pending_file, char const* CAnnFile);
 
         void create_Invoices(Date& todayDate); // Számlázi időszak lezártával lefutó folyamat.
         void create_Invoice();
         void newClient(Client& c);
-        void announceConsumption(Client&c,int emVal);
+        void announceConsumption(Client&c,int emVal, Date& d);
         Client& getClient(size_t id);
         Client& getClient(String& name);
 

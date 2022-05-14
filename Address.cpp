@@ -10,3 +10,12 @@
     return os;
 }
 */
+
+bool Address::operator==(Address& rhs){
+            if(town==rhs.getTown() && street==rhs.getStreet() 
+            && house==rhs.getHouse() && apartment==rhs.getApartment()){
+                return true;
+            }else{
+                return false;
+            }
+}

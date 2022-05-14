@@ -22,23 +22,38 @@ class Date{
         int getDay(){return day;};
 
         bool operator==(Date& rhs){
-            if(year==rhs.getYear() && month==rhs.getMonth() && day==rhs.getDay())
+            if(year==rhs.getYear() && month==rhs.getMonth() && day==rhs.getDay()){
                 return true;
+            } 
             return false;
         }
 
-        bool operator<(Date& rhs);
-        bool operator>(Date& rhs);
+        bool operator<(Date& rhs){
+            if((year<rhs.getYear()) || ((year==rhs.getYear() && (month<rhs.getMonth()))) 
+            || ((year==rhs.getYear() && (month==rhs.getMonth()) && (day<rhs.getDay())))){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        bool operator>(Date& rhs){
+            if((year>rhs.getYear()) || ((year==rhs.getYear() && (month>rhs.getMonth()))) 
+            || ((year==rhs.getYear() && (month==rhs.getMonth()) && (day>rhs.getDay())))){
+                return true;
+            }else{
+                return false;
+            }
+        }
 };
 
 /// Globális függvények:
 /// kiír az ostream-re
 /// @param os - ostream típusú objektum
-/// @param d0 - Date, amit kiírunk
+/// @param d - dátum, amit kiírunk
 /// @return os
-/*std::ostream& operator<<(std::ostream& os, Date& d){
+inline std::ostream& operator<<(std::ostream& os, Date& d){
     os << d.getYear() << "." << d.getMonth() << "." << d.getDay();
     return os;
-}*/
+}
 
 #endif

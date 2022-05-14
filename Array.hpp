@@ -10,8 +10,8 @@
 template <typename T>
 void debug(std::ostream& os, T message){
     #ifdef DEBUG
-        os << msg << std::flush
-    #endif DEBUG
+        os << message << std::flush;
+    #endif
 }
 #define DEBUG 1
 
@@ -65,20 +65,18 @@ class Array{
         int isElement(T& e) const{
                 int i=0;
                 for (T* dat=begin(); dat!=end(); dat++,i++) {
-                    std::cout << e << " == " << *dat << " ? ";
+                    debug(std::cout,e); debug(std::cout,"=="); debug(std::cout, *dat); debug(std::cout,"?\n");
                     if ((*dat==e)) {
-                        std::cout << " - I - " << i << std::endl;
+                        debug(std::cout, "@"); debug(std::cout,i);
                         return i;
                     }
-                    std::cout << " - N" << std::endl;
+                    debug(std::cout,"N");
                 }
                 return -1;
         }
             //töröl egy adott indexű elemet.
             //std::out_of_range hibát dob hibás indexelés esetén
         void del(size_t indx){
-            //TODO A törlés nem működik rendesen!
-            //Indexelési hiba esetén dobjon kivételt
             if(indx>=used){throw(std::out_of_range("Indexelesi hiba - del"));}
             T* tmp= new T[used-1]; size_t tmpAt=0;
             for(size_t pos=0;pos<used;pos++){
@@ -97,7 +95,9 @@ class Array{
         //std::logic_error-t dob, ha a törölni kívánt elem nem tagja az arraynek.
         void del(T& e){
             int flag=isElement(e);
-            std::cout << "flag: " << flag << std::endl;
+            debug(std::cout, "flag:");
+            debug(std::cout, flag);
+            debug(std::cout, "\n");
             if(flag==-1){
                 throw(std::logic_error("Element not in array."));
             }else{

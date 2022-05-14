@@ -77,5 +77,7 @@ std::ostream& operator<<(std::ostream& os, const String s){
     return os;
 }
 
-/// >> operátor, ami beolvas az istream-ről egy szót
+bool String::operator==(const String& rhs)const{
+    return strcmp(this->pData,rhs.c_str());
+}
 

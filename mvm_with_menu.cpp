@@ -11,14 +11,19 @@
      |____/            ...     #G      ..  t       ...      #G      .. 
                                j                            j          
 	(M)eseországi (V)illamos (M)űvek
+	CLI version
 	Gutási Ádám
 	Budapesti Műszaki és Gazdaságtudományi Egyetem
 	Programozás Alapjai II.
 	2022.
 
-	CLI főprogram (felhasználói változat)
+	\file mvm_with_menu.cpp
 
-	fájl: mvm_with_menu.cpp
+	Ez a fájl a parancssori, végfelhasználói verzió. 
+	A felhasználó egy menün keresztül tudja vezérelni a programot, 
+	adatokat pedig a terminálon keresztül tud bevinni.
+
+	A Debug információ a DEBUG makró befiniálásával kapcsolható be.
 
  * */
 
@@ -44,17 +49,8 @@ void add_newClient(Controller& Ctrl, int incr){
 	std::cout << " E-mail cím: "; std::cin >> e_mail; //TODO: regexes validálás
     char City[31];
 	std::cout << " Város: "; std::cin >> City;
-	/*String streetString('\0');
-	std::cout << "Street: ";
-	char c='\0';
-	while(c!='\n'){
-		c = getchar();
-		streetString=streetString+c;
-	}
-	std::cout << streetString << std::endl;*/
 	char street[101];
-	std::cout << " Utca "; std::cin >> street;
-	//std::cout << " Utca: "; std::cin >> street;
+	std::cout << " Utca (csak a neve)"; std::cin >> street;
 	int houseNum;
 	std::cout << " Házszám: "; std::cin >> houseNum;
 	int aptNum=1;
@@ -69,6 +65,7 @@ void add_newClient(Controller& Ctrl, int incr){
 	std::cout << " Fázisok száma: "; std::cin >> phases;
 	int strength;
 	std::cout << " Főbiztosíték erőssége: "; std::cin >> strength;
+	
 	//Létrehozzuk az Ügyfelet, majd eltároljuk
 	Date tmp_born(Y,M,D);
 	String ln(lastName); String fn(firstName);
@@ -83,14 +80,10 @@ int main(void){
 	std::cout.setf(std::ios::fixed);
 	std::cout.setf(std::ios::showpoint);
 	std::cout.precision(2);
-	Date todayDate(2022,5,13);
+	Date todayDate(2020,12,31); //A példában éppen a novemberi időszakot zárjuk.
 	std::cout << "Meseországi Villamos Művek" << std::endl;
 	//Menü, amíg ki nem lép a felhasználó
-	std::ofstream log("log.log");
-	// Adatok betöltése a streamről
-	 log << "[init] Adatok betöltése folyamatban.." << std::endl;
-	 Controller Ctrl; Ctrl.loadData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt");// (Clientdata.txt, Invoices.txt)...)
-	 log << "[init] Betöltés kész." << std::endl;
+	Controller Ctrl; Ctrl.loadData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt","Tariffs.txt","Consumption_announcements.txt");
 	while(true){
 		int option=0;
 		std::cout << "== Ügyfelek ügykörei ==" << std::endl;
@@ -112,14 +105,22 @@ int main(void){
 				add_newClient(Ctrl,Ctrl.clientsCount()+1);
 				break;
 			case 2:
-				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
-				std::cout << "> "; std::cin >> id;
-				std::cout << Ctrl.getClient(id);
-				// Egyenleg lekérdezése..
-				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
-				char buf; std::cin >> buf;
+				try
+				{
+					std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+					std::cout << "> "; std::cin >> id;
+					std::cout << Ctrl.getClient(id);
+					// Egyenleg lekérdezése..
+					std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
+				}
+				catch(const std::exception& e)
+				{
+					std::cerr << e.what() << '\n';
+				}
+				
 				break;
 			case 3:
+				try{
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
 				double val;
 				std::cout << "> "; std::cin >> id;
@@ -128,29 +129,50 @@ int main(void){
 				Ctrl.getClient(id).addFunds(val);
 				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << " ("  << id << ") új egyenlege: "<< Ctrl.getClient(id).getBalance() << ".- " << std::endl;
 				Ctrl.getClient(id).pay_Pending_Invoices(); // Próbáljuk meg befizettetni a tartoásokat.
+				}catch(const std::exception& e){
+					std::cerr << e.what() << '\n';
+				}
 				break;
 			case 4:
+				try{
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+				
 				id=0;
 				std::cout << "> "; std::cin >> id;
+				if(Ctrl.getClient(id).announcement.get_EM_val()!=-1){
+					std::cout << "⛔️ Erre az időszakra már bejelntett óraállást!" << std::endl;
+					break;
+				}
 				std::cout << "Fogyasztás bejelentése - " << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << std::endl;
 				int emVal;
 				std::cout << "Legutóbbi állás: " << Ctrl.getClient(id).getElectricMeterVal() << std::endl;
 				std::cout << "Mérőóra állása: " << std::endl;
 				std::cout << "> "; std::cin >> emVal;
 				// Fogyasztás bejelentés...
-				Ctrl.getClient(id).announcement=Consumption_announcement(Date(2022,5,13),emVal);
+				Ctrl.getClient(id).announcement=Consumption_announcement(todayDate,emVal);
+				}catch(const std::exception& e){
+					std::cerr << e.what() << '\n';
+				}
 				break;
 			case 5:
-				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
-				id=0;
-				std::cout << "> "; std::cin >> id;
-				std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << std::endl;
-				std::cout << "Befizetésre váró számlák száma: " << Ctrl.getClient(id).pendingInvoices.size() << " | " << Ctrl.getClient(id).getDebtval() << " .-" << std::endl;
+				try{
+					std::cout << "Ügyfél azonosítója (id) ?" << std::endl;
+					id=0;
+					std::cout << "> "; std::cin >> id;
+					std::cout << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << std::endl;
+					std::cout << "Befizetésre váró számlák száma: " << Ctrl.getClient(id).pendingInvoices.size() << " | " << Ctrl.getClient(id).getDebtval() << " .-" << std::endl;
+				}catch(const std::out_of_range& e){
+					std::cerr << e.what() << '\n';
+				}
+				
 				break;
 			case 6:
-				std::cout << " A számlázási időszak lezárul. Számlák kiírása" << std::endl;
-				Ctrl.create_Invoices(todayDate);
+				try{
+					std::cout << " A számlázási időszak lezárul. Számlák kiírása" << std::endl;
+					Ctrl.create_Invoices(todayDate);
+				}catch(const std::exception& e){
+					std::cerr << e.what() << '\n';
+				}
 				break;
 			case 7:
 				goto exit;
@@ -161,10 +183,9 @@ int main(void){
 		
 	}
 	exit: 
-	///Perzisztencia - adatok kimentése az eredeti fájljaikba.
-	///TODO: Ha teljesen jó a mentés, akkor az igazi fájlnevek használata.
-	Ctrl.saveData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt");
-	log.close();
+	//Perzisztencia - adatok kimentése az eredeti fájljaikba.
+
+	Ctrl.saveData("Clientdata.txt", "Invoices_archived.txt", "Invoices_pending.txt","Consumption_announcements.txt");
 
 
 	return 0;

@@ -60,10 +60,10 @@ class Client{
         int getId() const; // Lekérdezi az Ügyfél azonosítóját.
         String getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
         String getEMail() const; // lekérdezi az ügyfél e-mail címét
-        Date getDate() const; //  Lekérdezi az ügyfél születési dátumát.
+        Date& getDate(); //  Lekérdezi az ügyfél születési dátumát.
         String getfirstName() const; // Lekérdezi az ügyfél keresztnevét.
         String getlastName() const; // Lekérdezi az ügyfél vezetéknevét.
-        Address getAddress() const; // Lakcím lekérdezése
+        Address& getAddress(); // Lakcím lekérdezése
 
         int getPhases() const;
         int getStrength() const;
@@ -76,6 +76,7 @@ class Client{
         int getElectricMeterVal() const; // Lekérdezi a villanyóra azon állását, amediig be van fizetve
 
         double getDebtval() const; //Tartozás mennyiségének kiszámolása. Összegzi a befizetésre váró számlák fizetendőit.
+
         void pay_Pending_Invoices();
             // Egyenleg hozzáadása után egyből lefut
             // Megpróbálja befizetni a befizetésre váró számlákat.

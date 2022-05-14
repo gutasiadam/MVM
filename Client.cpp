@@ -17,7 +17,7 @@ String Client::getPhoneNumber() const{
 	return mobile;
 }
 
-Date Client::getDate() const{
+Date& Client::getDate(){
 	return born;
 }
 
@@ -29,7 +29,7 @@ String Client::getlastName() const{
 	return lastName;
 }
 
-Address Client::getAddress() const{
+Address& Client::getAddress(){
 	return resAddress;
 }
 
@@ -58,26 +58,24 @@ int Client::getElectricMeterVal() const{
 }
 
 void Client::pay_Pending_Invoices(){
-    std::cout << "=================" << std::endl;
+    std::cout << "=======================" << std::endl;
     if(pendingInvoices.size()>0){
-        std::cout << "Befizetésre váró számlák:" << pendingInvoices.size() << "db"<< std::endl;
+        std::cout << "Befizetésre váró számlák:" << pendingInvoices.size() << std::endl;
     //std::cout << "diff :" << pendingInvoices.end()-pendingInvoices.begin() << std::endl;
     Array<Invoice> tmp_Invoices=pendingInvoices; // Ebből vesszük, melyik számlát próbáljuk éppen fizetni.
     for(size_t idx=0;idx<tmp_Invoices.size() ; idx++){
-        std::cout << "=================" << std::endl;
+        std::cout << "=======================" << std::endl;
         std::cout << " * "<< tmp_Invoices[idx].get_toBePaid() << " ";
         if(balance>=tmp_Invoices[idx].get_toBePaid()){
             // A számla teljesíthető!
-            std::cout << "🟡 Van elegendő fedezet" << std::endl;
+            debug(std::cout, "🟡 Van elegendő fedezet");
             balance-=tmp_Invoices[idx].get_toBePaid();
             // A számlát átmozgatjuk az archiváltak közé.
-            std::cout << "archivedInvoices eddigi mérete:" << archivedInvoices.size() << std::endl;
             archivedInvoices.add(tmp_Invoices[idx]);
-            std::cout << "~~~~~~~Törlő fázis~~~~~~~~~" << std::endl;
+            debug(std::cout, "~~~~~~~Törlő fázis~~~~~~~~~");
             pendingInvoices.del(tmp_Invoices[idx]);
             std::cout << "\t\t Új egyenleg: " << balance << std::endl;;
         }else{
-            ///TODO: Memóriaszivárgást okoz ez az ág
             std::cout << "🔴 Nincs teljesítésre elegendő fedezet" << std::endl; // Nincs elég fedezet, mivel sorrendben haladunk, a többi számlát meg se nézzük.
             std::cout << "=================" << std::endl;
             break;
