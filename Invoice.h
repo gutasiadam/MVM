@@ -19,8 +19,8 @@ class Invoice{
         
     public:
         Invoice() : consumptionAmt(0), toBePaid(0){}; // Default ctor, Array-be rendezés miatt.
-        Invoice(Date c, Consumption_announcement& cAnnounce): created(c), 
-        announcement(cAnnounce), consumptionAmt(cAnnounce.get_EM_val()), toBePaid(0) {};
+        Invoice(Date c, Consumption_announcement& cAnnounce, int cAmt): created(c), 
+        announcement(cAnnounce), consumptionAmt(cAmt), toBePaid(0) {};
         
         Date& getCreated();
         Consumption_announcement& getCAnn();

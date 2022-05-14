@@ -25,9 +25,10 @@
 #include <iostream>
 #include <fstream>
 
-////#include "memtrace.h"
 #include "Controller.h"
 #include "Array.hpp"
+#include "memtrace.h"
+
 
 void add_newClient(Controller& Ctrl, int incr){
 	// Kérje be a szükséges adatokat...
@@ -103,7 +104,7 @@ int main(void){
 		std::cout << "== Rendszer ==" << std::endl;
 		std::cout << "[7] - Kilépés" << std::endl;
 		std::cout << "> "; std::cin >> option;
-		system("CLEAR"); // A JPORTára úgyis a unit etestes verzió kerül feltölésre.
+		//system("CLEAR"); // A JPORTára úgyis a unit etestes verzió kerül feltölésre.
 		int id;
 		switch(option){
 			case 1:
@@ -134,6 +135,7 @@ int main(void){
 				std::cout << "> "; std::cin >> id;
 				std::cout << "Fogyasztás bejelentése - " << Ctrl.getClient(id).getlastName() << Ctrl.getClient(id).getfirstName() << std::endl;
 				int emVal;
+				std::cout << "Legutóbbi állás: " << Ctrl.getClient(id).getElectricMeterVal() << std::endl;
 				std::cout << "Mérőóra állása: " << std::endl;
 				std::cout << "> "; std::cin >> emVal;
 				// Fogyasztás bejelentés...
@@ -149,7 +151,7 @@ int main(void){
 			case 6:
 				std::cout << " A számlázási időszak lezárul. Számlák kiírása" << std::endl;
 				Ctrl.create_Invoices(todayDate);
-				std::cout << "Hol áll meg???" << std::endl;
+				break;
 			case 7:
 				goto exit;
 				break;

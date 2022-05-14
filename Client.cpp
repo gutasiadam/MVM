@@ -58,20 +58,17 @@ int Client::getElectricMeterVal() const{
 }
 
 void Client::pay_Pending_Invoices(){
-    std::cout << "====== PAY ======" << std::endl;
-	
-    std::cout << "Archivált számlák (db) :" << archivedInvoices.size() << std::endl;
     std::cout << "=================" << std::endl;
     if(pendingInvoices.size()>0){
-        std::cout << "Befizetésre váró számlák (db) :" << pendingInvoices.size() << std::endl;
-    std::cout << "diff :" << pendingInvoices.end()-pendingInvoices.begin() << std::endl;
+        std::cout << "Befizetésre váró számlák:" << pendingInvoices.size() << "db"<< std::endl;
+    //std::cout << "diff :" << pendingInvoices.end()-pendingInvoices.begin() << std::endl;
     Array<Invoice> tmp_Invoices=pendingInvoices; // Ebből vesszük, melyik számlát próbáljuk éppen fizetni.
     for(size_t idx=0;idx<tmp_Invoices.size() ; idx++){
         std::cout << "=================" << std::endl;
-        std::cout << tmp_Invoices[idx].get_toBePaid() << std::endl;
+        std::cout << " * "<< tmp_Invoices[idx].get_toBePaid() << " ";
         if(balance>=tmp_Invoices[idx].get_toBePaid()){
             // A számla teljesíthető!
-            std::cout << "🟢 Van elegendő fedezet" << std::endl;
+            std::cout << "🟡 Van elegendő fedezet" << std::endl;
             balance-=tmp_Invoices[idx].get_toBePaid();
             // A számlát átmozgatjuk az archiváltak közé.
             std::cout << "archivedInvoices eddigi mérete:" << archivedInvoices.size() << std::endl;
@@ -80,6 +77,7 @@ void Client::pay_Pending_Invoices(){
             pendingInvoices.del(tmp_Invoices[idx]);
             std::cout << "\t\t Új egyenleg: " << balance << std::endl;;
         }else{
+            ///TODO: Memóriaszivárgást okoz ez az ág
             std::cout << "🔴 Nincs teljesítésre elegendő fedezet" << std::endl; // Nincs elég fedezet, mivel sorrendben haladunk, a többi számlát meg se nézzük.
             std::cout << "=================" << std::endl;
             break;
@@ -87,10 +85,9 @@ void Client::pay_Pending_Invoices(){
     }
     //std::cout << "Befizetésre váró számlák (db) :" << pendingInvoices.size() << std::endl;
     }else{
-        std::cout << "Nincs tartozás." << std::endl;
+        std::cout << "🟢 Nincs tartozás." << std::endl;
     }
-    std::cout << "AAAASD";
-    std::cout << "Archivált számlák (db) :" << archivedInvoices.size() << std::endl;
+    //std::cout << "Archivált számlák (db) :" << archivedInvoices.size() << std::endl;
 
 }
 

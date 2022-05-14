@@ -6,6 +6,15 @@
  * \file Array.hpp
  */
 
+
+template <typename T>
+void debug(std::ostream& os, T message){
+    #ifdef DEBUG
+        os << msg << std::flush
+    #endif DEBUG
+}
+#define DEBUG 1
+
 template <class T>
 class Array{
     T* data;
