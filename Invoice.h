@@ -28,6 +28,8 @@ class Invoice{
         int getConsumptionAmt() const;
         double get_toBePaid() const;
 
+        friend std::ostream& operator<<(std::ostream& os, Invoice& c);
+
         bool operator==(Invoice& rhs);
 };
 

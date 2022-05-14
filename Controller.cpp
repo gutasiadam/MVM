@@ -4,17 +4,18 @@
  * Ez a fájl tartalmazza a Controller osztály- és tagfüggvényeinek definícióját.
  */
 
+//#include "memtrace.h"
 #include "Controller.h"
 #include "math.h"
-//#include "memtrace.h"
+
 
 void Controller::loadData(char const* CData, char const* Invoices, char const* Invoices_pending){
     /**
      * Ügyfelek adatainak betölése
      */
     std::ifstream ClientsDat(CData);
-	while(!ClientsDat.eof()){
-        int id;
+	int id=-1;
+    while(ClientsDat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int balance;
         char firstName[51];
         char lastName[51];
@@ -29,8 +30,8 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
         int phases;
 		int strength;
         char e_mail[51];
-        ClientsDat >> id >> lastName >> firstName >> taxNum >> City >> street >> houseNum >> aptNum >> mobileNum >> e_mail >> type >> Y >> M >> D >> phases >> strength >> balance;
-        //std::cout << "id:" << id << " lastName: " << lastName <<  "firstName: "<< firstName << taxNum << City <<"str: " << street << "houseNum: " << houseNum << "aptNum: " << aptNum << " mobile: " << mobileNum << "email: " << e_mail << "type: " << type << "Y: " << Y << "M: " << M << "D: " << D << "phases: " << phases << "strength: " << strength << std::endl;
+        ClientsDat >> lastName >> firstName >> taxNum >> City >> street >> houseNum >> aptNum >> mobileNum >> e_mail >> type >> Y >> M >> D >> phases >> strength >> balance;
+        std::cout << "id:" << id << " lastName: " << lastName <<  "firstName: "<< firstName << taxNum << City <<"str: " << street << "houseNum: " << houseNum << "aptNum: " << aptNum << " mobile: " << mobileNum << "email: " << e_mail << "type: " << type << "Y: " << Y << "M: " << M << "D: " << D << "phases: " << phases << "strength: " << strength << std::endl;
 		Date tmp_born(Y,M,D);
         String ln(lastName); String fn(firstName);
         Address tmp_address(String(City),String(street),houseNum,aptNum);
@@ -41,33 +42,30 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
     for(size_t i=0;i<clientsCount();i++){
         std::cout << clients[i].getId() <<" ";
     }
-
-
-    Date tmp_tst_born(2002,11,26);
-	Address tmp_address_t("Budapest","Alma",27,1);
-    Client tmpClient_t(32,"Tett", "Elek",tmp_tst_born,tmp_address_t,"069245743","jajaj@gmail.com","077732832-0030",0,3,32);
-    clients.add(tmpClient_t);
     
     ClientsDat.close();
-    std::cout << "ClientDat done" << std::endl;
+    std::cout << "ClientDat done - hossz: " << clientsCount() << std::endl;
     
     /**
      * Számlák betölése
      */
     std::ifstream InvoicesDat(Invoices);
-    while(!InvoicesDat.eof()){
-        int id;
+    id=0;
+    while(InvoicesDat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int Y; int M; int D;
         int consumptionAmt;
         double toBePaid;
 
+        InvoicesDat >> Y >> M >> D >> consumptionAmt >> toBePaid;
+        std::cout << id << "\t" << Y << "\t" << M << "\t" << D << "\t" << consumptionAmt << "\t" << toBePaid;
+        InvoicesDat.ignore();
 
-        InvoicesDat >> id >> Y >> M >> D >> consumptionAmt >> toBePaid;
         Date tmpDate(Y,M,D);
         Consumption_announcement tmpCAnnounce(tmpDate,consumptionAmt);
         Invoice tmpInvoice(tmpDate,tmpCAnnounce);
         tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
-        //std::cout <<  clients[id].getId() << " - Számla hozzáadása" << std::endl;
+        std::cout << "clients["<<id<<"].getId()" << std::endl;
+        std::cout << " " << clients[id-1].getId() << " - Számla hozzáadása" << std::endl;
         clients[id-1].archivedInvoices.add(tmpInvoice);
 
         // Óraállást pörgeti, ahogy töltődnek be az adatok.
@@ -110,30 +108,35 @@ void Controller::loadData(char const* CData, char const* Invoices, char const* I
      * Befizetésre váró számlák betöltése
      */
     std::ifstream Invoices_pending_Dat(Invoices_pending);
-    while(!Invoices_pending_Dat.eof()){
-        int id;
+    while(Invoices_pending_Dat>>id){ //Elkerüljük az utolsó sor duplikálását.
         int Y; int M; int D;
         int consumptionAmt;
         double toBePaid;
 
 
-        Invoices_pending_Dat >> id >> Y >> M >> D >> consumptionAmt >> toBePaid;
-        /*if(id==30){
-            continue; //Segfaultol, valahol rossz cimre probalok irni.
-        }*/
-        //Gyors, ideiglenes teszt az adat hovakerülésének ellenőezésére.
-        //std::cout << clients[id].getName() << Y << M << D << consumptionAmt << toBePaid << std::endl;
+        Invoices_pending_Dat >> Y >> M >> D >> consumptionAmt >> toBePaid;
+        Invoices_pending_Dat.ignore();
+
         Date tmpDate(Y,M,D);
         Consumption_announcement tmpCAnnounce(tmpDate,consumptionAmt);
         Invoice tmpInvoice(tmpDate,tmpCAnnounce);
         tmpInvoice.set_toBePaid(toBePaid); //A kimentett adat már tartalmazza a fizetendőt.
-        std::cout <<  clients[id-1].getId() << " - Fizetendő hozzáadása" << std::endl;
+        std::cout <<  clients[id-1].getId() << " - ";
+        std::cout << " fogy: "<<tmpInvoice.getConsumptionAmt() << " ";
         clients[id-1].pendingInvoices.add(tmpInvoice);
-        clients[id-1].modify_electricMeter(tmpCAnnounce.get_EM_val()); // Óraállást pörgeti, ahogy töltődnek be az adatok.
+        std::cout <<  clients[id-1].pendingInvoices.size() << " méret" << std::endl;
+        if(Invoices_pending_Dat.eof()) break;
     }
     Invoices_pending_Dat.close();
 }
 
+/**
+ * @brief Adatok kimentése txt fájlokba
+ * 
+ * @param CData Az ügyfelek adatait tartalmazó szövegfájl
+ * @param Invoices Az archivált (befizetettt) számlákat tartalmazó szövegfájl.
+ * @param Invoices_p A befizetésre váró számlákat tartalmazó szövegfájl.
+ */
 void Controller::saveData(char const* CData, char const* Invoices, char const* Invoices_p){
     // Először az ügyfelek adatait töltjük be.
     std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_p);
@@ -165,8 +168,7 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
         }
 
 
-        //Majd a befizetésre váró számlákat ítjuk ki...
-
+        //Kiírjuk a befizetésre váró számlákat.
         for(Invoice* archived=ptr->pendingInvoices.begin();
         archived != ptr->pendingInvoices.end(); archived++){
             Invoices_pending << ptr->getId()
@@ -179,18 +181,12 @@ void Controller::saveData(char const* CData, char const* Invoices, char const* I
 
     }
     ClientsDat.close();
-    //debug(std::cout, "ClientDat Write done.");
     Invoices_archived.close();
-    //debug(std::cout, "Archived Write done.");
     Invoices_pending.close();
     
 }
 
 void Controller::newClient(Client& c){
-    //TODO: pararméteresre átalakítani
-    /*Date tmp_tst_born(2002,11,26);
-	Address tmp_address_t("Budapest","Almaa",27,1);
-    Client tmpClient_t(32,"Test", "Elek 2 ",tmp_tst_born,tmp_address_t,"06945743","jajaj@gmail.com","077832-0030",0,3,32);*/
     clients.add(c);
 }
 
@@ -237,7 +233,6 @@ double Controller::calculate_toBePaid(Client& c){
 }
 
 void Controller::create_Invoices(Date& todayDate){
-    std::cout << "Kezdődjön a számolás" << std::endl;
     /**
 	 * Minden egyes kliensre meghívódik:
 	 * 	1. Ha van az ügyfélnek fogyasztási bejelentése az időszakra, akkor ez alapján számoljunk!
@@ -264,7 +259,7 @@ void Controller::create_Invoices(Date& todayDate){
             if(invoiceptr!=invend){
                 std::cout << "Van archivált számla.";
                 int s=0; int n=0;
-                for(invoiceptr;invoiceptr!=invend;invoiceptr++,n++){
+                for(;invoiceptr!=invend;invoiceptr++,n++){
                     s+=invoiceptr->getConsumptionAmt();
                 }
                 double avg=(s/n);
@@ -291,7 +286,7 @@ void Controller::create_Invoices(Date& todayDate){
 /*Client& Controller::getClient(String& name){
     return clients[0];
 }*/
-Client& Controller::getClient(int id){
+Client& Controller::getClient(size_t id){
     if(id>clients.size()){
         throw std::out_of_range("Indexelési hiba!");
         ///TODO: indexlési hiba elkapása
@@ -299,6 +294,6 @@ Client& Controller::getClient(int id){
     return clients[(id-1)];
 }
 
-int Controller::clientsCount(){
-    return this->clients.size()-1;
+size_t Controller::clientsCount(){
+    return this->clients.size();
 }

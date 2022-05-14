@@ -25,19 +25,9 @@
 #include <iostream>
 #include <fstream>
 
-//#include "memtrace.h"
+////#include "memtrace.h"
 #include "Controller.h"
 #include "Array.hpp"
-#define DEBUG 1
-
-template <typename T>
-void debug(std::ostream& os, T message){
-    #ifdef DEBUG
-        os << message << std::flush;
-    #endif //DEBUG makró
-}
-
-
 
 void add_newClient(Controller& Ctrl, int incr){
 	// Kérje be a szükséges adatokat...
@@ -52,12 +42,20 @@ void add_newClient(Controller& Ctrl, int incr){
 	char e_mail[51];
 	std::cout << " E-mail cím: "; std::cin >> e_mail; //TODO: regexes validálás
     char City[31];
-	std::cout << " Város: "; std::cin >> e_mail;
+	std::cout << " Város: "; std::cin >> City;
+	/*String streetString('\0');
+	std::cout << "Street: ";
+	char c='\0';
+	while(c!='\n'){
+		c = getchar();
+		streetString=streetString+c;
+	}
+	std::cout << streetString << std::endl;*/
 	char street[101];
 	std::cout << " Utca "; std::cin >> street;
 	//std::cout << " Utca: "; std::cin >> street;
 	int houseNum;
-	std::cout << " Házszám: "; std::cin >> std::skipws >> houseNum;
+	std::cout << " Házszám: "; std::cin >> houseNum;
 	int aptNum=1;
 	std::cout << " Lakás száma (1, ha egylakásos a ház): "; std::cin >> aptNum;
 	char taxNum[13];
@@ -75,11 +73,15 @@ void add_newClient(Controller& Ctrl, int incr){
 	String ln(lastName); String fn(firstName);
 	Address tmp_address(String(City),String(street),houseNum,aptNum);
 	Client tmpClient(incr, ln, fn,tmp_born,tmp_address,String(mobileNum),String(e_mail),String(taxNum),type,phases,strength);
+	tmpClient.addFunds(bal); // Kezdőegyenleg hozzáadása.
 	Ctrl.newClient(tmpClient);
 }
 
 
 int main(void){
+	std::cout.setf(std::ios::fixed);
+	std::cout.setf(std::ios::showpoint);
+	std::cout.precision(2);
 	Date todayDate(2022,5,13);
 	std::cout << "Meseországi Villamos Művek" << std::endl;
 	//Menü, amíg ki nem lép a felhasználó
@@ -106,7 +108,7 @@ int main(void){
 		switch(option){
 			case 1:
 				std::cout << "=== Új Ügyfél felvétele ===" << std::endl;
-				add_newClient(Ctrl,Ctrl.clientsCount());
+				add_newClient(Ctrl,Ctrl.clientsCount()+1);
 				break;
 			case 2:
 				std::cout << "Ügyfél azonosítója (id) ?" << std::endl;

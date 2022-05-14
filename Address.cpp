@@ -1,6 +1,5 @@
 #include "Address.h"
-
-/// Globális függvények:
+////#include "memtrace.h"/// Globális függvények:
 /// kiír az ostream-re
 /// @param os - ostream típusú objektum
 /// @param a0 - Address, amit kiírunk

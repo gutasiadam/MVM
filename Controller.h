@@ -6,8 +6,7 @@
  * Ez a fájl tartalmazza a Controller osztály- és tagfüggvényeinek deklarációját
  */
 #include <fstream>
-//#include "memtrace.h"
-
+//////#include "memtrace.h"
 #include "Client.h"
 #include "Array.hpp"
 #include "Tariffs.h"
@@ -30,12 +29,12 @@ class Controller {
         void create_Invoice();
         void newClient(Client& c);
         void announceConsumption(Client&c,int emVal);
-        Client& getClient(int id);
+        Client& getClient(size_t id);
         Client& getClient(String& name);
 
         double calculate_toBePaid(Client& c); 
 
-        int clientsCount();
+        size_t clientsCount();
         
         Tariffs& getTariffs();
 

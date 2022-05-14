@@ -1,6 +1,4 @@
 #include "Consumption_announcement.h"
-
-
 Date& Consumption_announcement::getDate(){
 	return date;
 }

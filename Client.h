@@ -8,8 +8,7 @@
 
 #include <iostream>
 #include <regex> // E-mail és telefonszám validálására.
-//#include "memtrace.h"
-
+//////#include "memtrace.h"
 #include "Address.h"
 #include "Date.h"
 #include "String.h"
