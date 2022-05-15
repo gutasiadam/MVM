@@ -72,7 +72,7 @@ char const* Invoices_pending, char const* Tariffs, char const* CAnnFile){
     InvoicesDat.setf(std::ios::fixed); InvoicesDat.setf(std::ios::showpoint); InvoicesDat.precision(2);
     id=0;
     while(InvoicesDat>>id){ //Elkerüljük az utolsó sor duplikálását.
-        int Y; int M; int D;
+        unsigned int Y; unsigned int M; unsigned int D;
         int consumptionAmt;
         double toBePaid;
         int emVal;
@@ -119,7 +119,7 @@ char const* Invoices_pending, char const* Tariffs, char const* CAnnFile){
     debug(std::cout, "Fogyasztási bejelentések betöltése....");
     std::ifstream Consumption_ann_Dat(CAnnFile);
     while(Consumption_ann_Dat>>id){ //Elkerüljük az utolsó sor duplikálását.
-        int Y;int M; int D; int emVal;
+        unsigned int Y;unsigned int M; unsigned int D; int emVal;
         Consumption_ann_Dat >> Y >> M >> D >> emVal;
         Date tmpDate(Y,M,D);
         Consumption_announcement tmpAnnounce(tmpDate,emVal);

@@ -48,9 +48,9 @@ void add_newClient(Controller& Ctrl, int incr){
 	std::cout << " Vezetéknév: "; std::cin >> lastName;
 	std::cout << " Keresztnév: "; std::cin >> firstName;
 	char mobileNum[21];
-	std::cout << " Telefonszám: "; std::cin >> mobileNum; //TODO: regexes validálás
+	std::cout << " Telefonszám: "; std::cin >> mobileNum;
 	char e_mail[51];
-	std::cout << " E-mail cím: "; std::cin >> e_mail; //TODO: regexes validálás
+	std::cout << " E-mail cím: "; std::cin >> e_mail;
     char City[31];
 	std::cout << " Város: "; std::cin >> City;
 	char street[101];

@@ -113,7 +113,6 @@ int main() {
     }END
 
     
-///TODO: Tariff_calc szivárog valahol
     TEST(Tariff, Tariff_calc){
       //Tarifa számítási módjának tesztelése
       Date dummy_2_date_test(2020,12,4);
@@ -121,8 +120,6 @@ int main() {
       // Régi óraállás: 5774
       // Új óraállás: 6156
       Consumption_announcement dummy_2_cAnnounce(dummy_2_date_test,6156);
-
-      std::cout << "dummy2 balance: " << dummy_2.getBalance();
 
       Invoice dummy2_invoice(dummy_2_date_test,dummy_2_cAnnounce,382);
       Ctrl.getClient(30).pendingInvoices.add(dummy2_invoice);
@@ -137,10 +134,6 @@ int main() {
       //std::cout << "val: " << val-dummy2_testagainstVal;
       EXPECT_EQ((int)dummy2_testagainstVal,(int)val);
     }END
-
-    TEST(Invoices, create_with_avg_invoice){
-      // Átlag alapján számított számla tesztelése
-    }ENDM
 
     TEST(Operators, operator_eq_test){ // operator== dátum teszt
       Date dummy_1_date_test(2000,12,15);
@@ -178,24 +171,13 @@ int main() {
       EXPECT_FALSE(initialClientsSize==sizeAfterAdd); // Ekkor tehát hozzáadás történt.
     }END
 
-    
+    TEST (Array, exceptions){
+      EXPECT_ANY_THROW(Ctrl.getClient(32)); //std::out_of_range
+      EXPECT_ANY_THROW(Ctrl.getClient(-1)); //std::out_of_range
+    }END
 
     
 
   GTEND(std::cerr);       // Csak C(J)PORTA működéséhez kell
-  return 0;
-
-  /*
-  gtest_lite.h fájlból átvett komment, ez alapján készülnek a tesztek.
-   ...
-   // Fatális hiba esetén a teszteset nem fut tovább. Ezek az ASSERT... makrók.
-   // Nem lehet a kiírásukhoz további üzenetet fűzni. PL:
-     TEST(TeszEsetNeve, TesztNeve)
-       ASSERT_NO_THROW(f(0));  // itt nem lehet << "duma"
-       EXPECT_EQ(4, f(2)) << "A függvény hibás eredményt adott" << std::endl;
-       ...
-     END
-    ...
-    */
   return 0;
 }

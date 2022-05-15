@@ -11,7 +11,6 @@
 
 
 #include <iostream>
-#include <regex> // E-mail és telefonszám validálására.
 #include "Address.h"
 #include "Date.h"
 #include "String.h"
@@ -51,7 +50,7 @@ class Client{
         Client(int id, String lN, String fN, Date b, Address res, String m, 
         String em, String taxN, bool type, int phases, int strength): id(id), firstName(fN), lastName(lN), born(b), resAddress(res), 
         mobile(m), e_mail(em), taxNumber(taxN), electricMeter_last(0), type(type), phases(phases), strength(strength), balance(0){
-            ///TODO: e-mail, telefonszám validálása
+            
         }
 
         Client& operator=(Client& rhs); /*!< Értékadó operatáror */

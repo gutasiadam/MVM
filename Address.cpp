@@ -19,7 +19,7 @@ String& Address::getStreet(){return street;}
  * 
  * @return String& - String referenciájával tér vissza.
  */
-String& Address::getTown(){return town;}; /*!< Város nevének lekérése *
+String& Address::getTown(){return town;}
 /**
  * @brief házszám lekérése
  * 
@@ -31,7 +31,7 @@ int Address::getHouse(){return house;}
  * 
  * @return int 
  */
-int Address::getApartment(){return apartment;};
+int Address::getApartment(){return apartment;}
 
 
 /**

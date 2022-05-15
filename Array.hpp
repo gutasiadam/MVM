@@ -161,19 +161,7 @@ class Array{
                del(flag);
             }
         }
-
-        /**
-         * @brief Bejárja a tömböt, és végrehajt rajtuk egyesével egy függvényt (funktor)
-         * 
-         * @tparam FuncType - funktor osztály
-         * @param func - funktor osztály
-         */
-        template<class FuncType>
-        void traverse(FuncType func){
-            for(size_t i=0;i<used;i++){
-                func(data[i]);
-            }
-        }
+        
         /**
          * @brief Indexelő operátor
          * egy adott indexű elem refernciájával tér vissza.
