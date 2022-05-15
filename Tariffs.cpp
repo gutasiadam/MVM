@@ -1,5 +1,10 @@
-//#include "memtrace.h"
 #include "Tariffs.h"
+/**
+ * @brief Ez a fájl tartalmazza a tarifák inicializálását.
+ * 
+ * Mindegyik 0-ra inicailizálódik, mert a fájlok betöltésekor állítódnak be az értékeik
+ * 
+ */
 
 double Tariffs::residental_16=0;
 double Tariffs::residental_32=0;

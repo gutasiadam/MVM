@@ -1,4 +1,4 @@
-/**
+/*
                                 ..       :                   ..       :
                                ,W,     .Et t      .DD.      ,W,     .Et
                               t##,    ,W#t EK:   ,WK.      t##,    ,W#t
@@ -16,16 +16,20 @@
 	Budapesti Műszaki és Gazdaságtudományi Egyetem
 	Programozás Alapjai II.
 	2022.
+ */
 
-	\file mvm_with_menu.cpp
-
-	Ez a fájl a parancssori, végfelhasználói verzió. 
+/**
+ * @file mvm_with_menu.cpp
+ * @author Gutási Ádám
+ * @brief Ez a fájl a parancssori, végfelhasználói verzió. 
 	A felhasználó egy menün keresztül tudja vezérelni a programot, 
 	adatokat pedig a terminálon keresztül tud bevinni.
 
 	A Debug információ a DEBUG makró befiniálásával kapcsolható be.
-
- * */
+ * @date 2022-05-15
+ * 
+ * 
+ */
 
 #include <iostream>
 #include <fstream>

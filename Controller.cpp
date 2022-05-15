@@ -1,13 +1,29 @@
 /**
- * \file Controller.cpp
- *
- * Ez a fájl tartalmazza a Controller osztály- és tagfüggvényeinek definícióját.
+ * @file Controller.cpp
+ * @author Gutási Ádám
+ * @brief Az MVM rendszert kezelő osztály, amely a nyilvántartást is tartalmazza.
+ * 
+ * Ezzel a megoldással a program minimális módosítással egyszerre akár több, 
+ * egymástól teljesen elválasztott adathalmazt is tud kezelni, szimplán egy új Controller osztály
+ * meghívásával.
+ * 
+ * @date 2022-05-15
+ * 
  */
 
-//#include "memtrace.h"
 #include "Controller.h"
 #include "math.h"
 
+
+/**
+ * @brief Az adatokat tartalmazó fájlok betöltése, tárolása.
+ * 
+ * @param CData - Az ügyfelek adatait tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param Invoices - Az archivált számlákat tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param Invoices_pending - A befizetésre váró számlákat tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param Tariffs - A tarifákat tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param CAnnFile - A fogyasztási bejelentéseket tartalmazó, tabulátoral tagolt szövegfájl.
+ */
 void Controller::loadData(char const* CData, char const* Invoices, 
 char const* Invoices_pending, char const* Tariffs, char const* CAnnFile){
     /**
@@ -150,24 +166,33 @@ char const* Invoices_pending, char const* Tariffs, char const* CAnnFile){
 }
 
 /**
- * @brief Adatok kimentése txt fájlokba
+ * @brief Az adatokat tartalmazó fájlok mentése, adatok tárolása.
  * 
- * @param CData Az ügyfelek adatait tartalmazó szövegfájl
- * @param Invoices Az archivált (befizetettt) számlákat tartalmazó szövegfájl.
- * @param Invoices_p A befizetésre váró számlákat tartalmazó szövegfájl.
+ * Bezárás parancsra ( 7 ) bezárul.
+ * A Unit teszt nem használja, ,mert például a számlázás, és fizetés után az adatok megváltoznak,
+ * a következő futáskor a teszt hibásan futna le.
+ * 
+ * Használatának kipróbálásához cseréljük le a main.cpp-t az mvm_with_menu.cpp állományram
+ * használjuk a CLI verziót.
+ * 
+ * @param CData - Az ügyfelek adatait tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param Invoices - Az archivált számlákat tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param Invoices_pending_file - A befizetésre váró számlákat tartalmazó, tabulátoral tagolt szövegfájl.
+ * @param CAnnFile - A fogyasztási bejelentéseket tartalmazó, tabulátoral tagolt szövegfájl.
  */
 void Controller::saveData(char const* CData, char const* Invoices, 
 char const* Invoices_pending_file, char const* CAnnFile){
-    // Először az ügyfelek adatait töltjük be.
+    
+
+    //Double beállításai: legyen a pontosság 2 tized.
     std::ofstream ClientsDat(CData); std::ofstream Invoices_archived(Invoices); std::ofstream Invoices_pending(Invoices_pending_file);
     ClientsDat.setf(std::ios::fixed); ClientsDat.setf(std::ios::showpoint); ClientsDat.precision(2);
     Invoices_archived.setf(std::ios::fixed); Invoices_archived.setf(std::ios::showpoint); Invoices_archived.precision(2);
     Invoices_pending.setf(std::ios::fixed); Invoices_pending.setf(std::ios::showpoint); Invoices_pending.precision(2);
+    
+    // Először az ügyfelek adatait mentjük ki.
     std::ofstream Consumption_ann_Dat(CAnnFile);
-    //std::cout << "Clients mérete:" << clients.size() << std::endl;
     for(Client* ptr=clients.begin(); ptr != clients.end(); ptr++){
-        // Átfutunk a kliens adatán, kiírjuk..
-        // Todo: név szeparálása!
         ClientsDat << ptr->getId()
         << '\t' << ptr->getlastName()
         << '\t' << ptr->getfirstName()
@@ -207,8 +232,7 @@ char const* Invoices_pending_file, char const* CAnnFile){
 
         //Fogyasztási bejelentések kiírása.
         {
-            // Ha -1, akkor friss számlázás volt, nincs mit kiírni.
-            if(ptr->announcement.get_EM_val()!=-1){
+            if(ptr->announcement.get_EM_val()!=-1){// Ha -1, akkor friss számlázás volt, nincs mit kiírni.
                 Consumption_ann_Dat << ptr->getId()
                 << '\t' << ptr->announcement.getDate().getYear()
                 << '\t' << ptr->announcement.getDate().getMonth()
@@ -219,21 +243,48 @@ char const* Invoices_pending_file, char const* CAnnFile){
         }
 
     }
-    ClientsDat.close();
+    // Megnyitott állományok bezárása.
+
+    ClientsDat.close(); 
     Invoices_archived.close();
     Invoices_pending.close();
     Consumption_ann_Dat.close();
+
     debug(std::cout, "Fájlok mentése kész.\n");
 }
 
+/**
+ * @brief Új Ügyfél hozzáadása a tárolóhoz.
+ * 
+ * Ekkor már a feltöltendő ügyfél adataiból össze lett állítva az ügyfél.
+ * @param c - A feltöltenő Ügyfél objektuma.
+ */
 void Controller::newClient(Client& c){
-    clients.add(c);
+    clients.add(c); // Rábízzuk az Arrayre.
 }
 
+/**
+ * @brief Fizetendő összeg kiszámolása
+ * 
+ * Olyan esetekben történik ennek a függvénynek a számolása, ha
+ *      1. - Van az adott időszakra fogyasztási bejelentés ( debug: zöld )
+ *      2- - Ki lett számítva egy átlag fogyasztás, ami alapján számolhat a rendszer. ( debug: sárga )
+ * 
+ * A számlák ilyenkor már elemei a tárolónka, 0 értékkel.
+ * 
+ * A Tarifa számításának módja: 
+ * log2(Főbiztosíték erőssége)*tarifa*fogyasztás+alapdíj
+ * 
+ * @param c - Referencia az ügyfél objektumára, akinek éppen számlázunk.
+ * @return double A fizetendő értéke, double típusként.
+ */
 double Controller::calculate_toBePaid(Client& c){
-    int consumption=(c.pendingInvoices.end()-1)->getConsumptionAmt();
+    int consumption=(c.pendingInvoices.end()-1)->getConsumptionAmt(); // kiválasztjuk a fogyasztott mennyiséget.
     debug(std::cout,"Fizetendő: "); debug(std::cout,consumption); debug(std::cout,"kWh\n");
-	// Tarifa számításának módja: log2(Főbiztosíték erőssége)*tarifa*fogyasztás+alapdíj
+
+	// Tarifa számításának módja: 
+    // log2(Főbiztosíték erőssége)*tarifa*fogyasztás+alapdíj
+
     double endVal=0;
 	if(c.getType()==0){ // lakossági
         if(c.getStrength()==16){
@@ -275,6 +326,14 @@ double Controller::calculate_toBePaid(Client& c){
     return endVal;
 }
 
+/**
+ * @brief Számlák létrehozása, számlázási időszak lezárása.
+ * 
+ * A dátum a szimulált működésben ez 2020. 12. 31., ugyanis az ügyfelek éppen a novemberi fogyasztásukat
+ * jelentik be.
+ * 
+ * @param todayDate A "mai" dátum.
+ */
 void Controller::create_Invoices(Date& todayDate){
     /**
 	 * Minden egyes kliensre meghívódik:
@@ -348,26 +407,49 @@ void Controller::create_Invoices(Date& todayDate){
         debug(std::cout, "\nbefizetésre váró számlák:");
         debug(std::cout, it->pendingInvoices.size());
         debug(std::cout, "\n");
-        //Ne felejtsük el az előre bejelentett adatot törölni, hogy a bezáráskor törlődjön a rendszerből.
+
+        //Ne felejtsük el az előre bejelentett adatot törölni, 
+        //Ennek hatására az ügyfélhez tartozó bejelentés -1-re vált.
         it->announcement.Reset();
     } // minden egyes ügyfél blokk
 }
 
+/**
+ * @brief Visszaad egy ügyfél objektum referenciát, az ügyfél ID-je alapján.
+ * 
+ * @param id A keresett ügyfél ID-je.
+ * @return Client& - az ügyfél objektum refernciája.
+ */
 Client& Controller::getClient(size_t id){
+
+    // Ha túlindexelünk, akkor std::out_of_range kivételt dob.
     if(id>clients.size()){
         throw std::out_of_range("Indexelési hiba!");
     }
-    return clients[(id-1)];
+
+    // A tárolás módja miatt kell -1.
+    // Ugyanis az ügyfelek adatait tartalmazó txt-ben az adott sorban az adott id-jű
+    // ügyfelek vannak. Így a tárolóban levő indexe esetén ki kell vonni 1-et.
+    return clients[(id-1)]; 
 }
 
+/**
+ * @brief Visszaadja, hány ügyfél van a rendszerben
+ * 
+ * @return size_t - a rendszerben tárolt ügyfelek száma
+ */
 size_t Controller::clientsCount(){
     return this->clients.size();
 }
 
-
+/**
+ * @brief Fogyasztást jelent be.
+ * 
+ * Csak akkor állítja be a fogyasztást, ha -1 volt addig -> vagyis ha még nem volt bejelentés a hónapra.
+ * 
+ * @param c - Ügyfél objektum refernciája.
+ * @param emVal - Az óra állása a bejelentés pillanatában ( nem fogyasztás )
+ * @param d - A bejelentés dátum referenciája
+ */
 void Controller::announceConsumption(Client&c,int emVal, Date& d){
-    if(c.announcement.get_EM_val()==-1){
-        c.announcement=Consumption_announcement(d,emVal);
-    }
-    
-}
+    if(c.announcement.get_EM_val()==-1){c.announcement=Consumption_announcement(d,emVal);}}

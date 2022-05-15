@@ -1,14 +1,17 @@
 #ifndef CLIENT_H
 #define CLIENT_H
+
 /**
- * \file Address.h
- *
- * Ez a fájl tartalmazza a Client osztály deklarációját és inline függvényeit.
+ * @file Client.h
+ * @author Gutási Ádám
+ * @brief Ez a fájl tartalmazza a Client osztály deklarációját és inline függvényeit.
+ * @date 2022-05-15
+ * 
  */
+
 
 #include <iostream>
 #include <regex> // E-mail és telefonszám validálására.
-//////#include "memtrace.h"
 #include "Address.h"
 #include "Date.h"
 #include "String.h"
@@ -21,28 +24,28 @@
 class Client{
     friend class Controller;
     private:
-        int id;
-        String firstName;
-        String lastName;
-        Date born;
-        Address resAddress;
-        String mobile;
-        String e_mail;
-        String taxNumber;
-        int electricMeter_last;
+        int id; /*!< Ügyfél azonosítója */
+        String firstName; /*!< Ügyfél keresztneve */
+        String lastName; /*!< Ügyfél vezetékneve */
+        Date born; /*!< Ügyfél születési dátuma */
+        Address resAddress; /*!< Ügyfél címe */
+        String mobile; /*!< Ügyfél telefonszáma */
+        String e_mail; /*!< Ügyfél e-mail címe */
+        String taxNumber; /*!< Ügyfél adóazonoító jele */
+        int electricMeter_last; /*!< Ügyfél utolsó, fizetett óraállása */
 
-        bool type;
+        bool type; /*!< Ügyfél típusa ( lakossági / vállalati) */
 
-        int phases;
-        int strength;
+        int phases; /*!< Ügyfél csomagjának fázisszáma (2,3) */
+        int strength; /*!< Ügyfél főbiztosítékjának erőssége. */
 
 
-        double balance;
+        double balance; /*!< Ügyfél egyenlege */
 
     public:
-        Consumption_announcement announcement;
-        Array<Invoice> archivedInvoices; // Archivált számlák
-        Array<Invoice> pendingInvoices; // Befizetésre váró számlák
+        Consumption_announcement announcement; /*!< Fogyasztási bejelentés */
+        Array<Invoice> archivedInvoices; /*!< Archivált számlák */
+        Array<Invoice> pendingInvoices; /*!< Befizetésre váró számlák */
         
         Client() {}; // default ctor
         Client(int id, String lN, String fN, Date b, Address res, String m, 
@@ -51,53 +54,38 @@ class Client{
             ///TODO: e-mail, telefonszám validálása
         }
 
-        Client& operator=(Client& rhs); // Copy operator
+        Client& operator=(Client& rhs); /*!< Értékadó operatáror */
 
         size_t ClientSize();
 
-        void addFunds(double moneyVal); // Összeget ír jóvá az ügyfél számláján.
-        double getBalance() const;// Lekérdezi az ügyfél egyenlegét.
-        int getId() const; // Lekérdezi az Ügyfél azonosítóját.
-        String getPhoneNumber() const; // lekérdezi az ügyfél telefonszámát.
-        String getEMail() const; // lekérdezi az ügyfél e-mail címét
-        Date& getDate(); //  Lekérdezi az ügyfél születési dátumát.
-        String getfirstName() const; // Lekérdezi az ügyfél keresztnevét.
-        String getlastName() const; // Lekérdezi az ügyfél vezetéknevét.
-        Address& getAddress(); // Lakcím lekérdezése
+        void addFunds(double moneyVal); /*!< Összeget ír jóvá az ügyfél számláján.*/
+        double getBalance() const;/*!< Lekérdezi az ügyfél egyenlegét.*/
+        int getId() const; /*!< Lekérdezi az Ügyfél azonosítóját.*/
+        String getPhoneNumber() const; /*!< lekérdezi az ügyfél telefonszámát.*/
+        String getEMail() const; /*!< lekérdezi az ügyfél e-mail címét*/
+        Date& getDate(); /*!<  Lekérdezi az ügyfél születési dátumát.*/
+        String getfirstName() const; /*!< Lekérdezi az ügyfél keresztnevét.*/
+        String getlastName() const; /*!< Lekérdezi az ügyfél vezetéknevét.*/
+        Address& getAddress(); /*!< Lakcím lekérdezése*/
 
-        int getPhases() const;
-        int getStrength() const;
+        int getPhases() const; /*!< Fázisok számának  lekérdezése*/
+        int getStrength() const; /*!< Főbiztosíték erősségének lekérdezése*/
 
 
-        bool getType() const; // Visszaadja az ügyfél típusát (magánszemély/vállalati)
+        bool getType() const; /*!< Visszaadja az ügyfél típusát (magánszemély/vállalati)*/
         
-        String getTN() const;
-            // Lekérdezi az ügyfél/vállalat adóazonosítóját.
-        int getElectricMeterVal() const; // Lekérdezi a villanyóra azon állását, amediig be van fizetve
+        String getTN() const; /*!< Lekérdezi az ügyfél/vállalat adóazonosítóját.*/
+        int getElectricMeterVal() const; /*!< Lekérdezi a villanyóra azon állását, amediig be van fizetve*/
 
-        double getDebtval() const; //Tartozás mennyiségének kiszámolása. Összegzi a befizetésre váró számlák fizetendőit.
+        double getDebtval() const; /*!<Tartozás mennyiségének kiszámolása.*/
 
-        void pay_Pending_Invoices();
-            // Egyenleg hozzáadása után egyből lefut
-            // Megpróbálja befizetni a befizetésre váró számlákat.
+        void pay_Pending_Invoices(); /*!< Megpróbálja befizetni a befizetésre váró számlákat. */
 
-            // Visszaadja, hány darab számla vár még befizetésre.
-            // (lényegében a pendingInvoices új hosszát.)
-
-        friend std::ostream& operator<<(std::ostream& os, Client& c);
+        friend std::ostream& operator<<(std::ostream& os, Client& c); /*!< Stream operator*/
         protected:
-            void modify_electricMeter(int amt);
-            // befizetés után módosítja a villanyóra azon
-            // állását, ameddig be van fizetve
-            // (electricMeter_last)
+            void modify_electricMeter(int amt); /*!< Villanyóra állásának módosítása*/
+
 
 };
-
-/// Globális függvények:
-/// kiír az ostream-re
-/// @param os - ostream típusú objektum
-/// @param c0 - Client, amit kiírunk
-/// @return os
-
 
 #endif

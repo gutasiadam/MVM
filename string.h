@@ -1,113 +1,105 @@
 #ifndef STRING_H
 #define STRING_H
 /**
- * \file String.h
- *
- * Ez a fájl tartalmazza a String osztály deklarációját és inline függvényeit.
+ * @file String.h
+ * @author Gutási Ádám
+ * @brief Ez a fájl taartalmazza a String osztály deklarációit, és az inline függvényeket.
+ * @date 2022-05-15
+ * 
+ * 
  */
 
 #include <iostream>
 
-/**
- * String osztály.
- * A pData-ban vannak a karakterek (a lezáró nullával együtt),
- * len a hossz.A hosszba nem számít bele a lezáró nulla.
- */
 class String {
-    char *pData;    ///< pointer az adatra
-    size_t len;     ///< hossz lezáró nulla nélkül
+    char *pData;    ///< Adat pointer
+    size_t len;     ///< Lezáró nulla nélküli hossz
 public:
-    /// Hossz lekérdezése.
-    /// @return Sztring hossza
+    /**
+     * @brief Visszaadja a string hosszát.
+     * 
+     * @return size_t A string hossza
+     */
 	size_t size() const { return len; }
 
-
-    /// Default konstruktor
     String() :pData(0), len(0) {}
-    /// helyett ""-val inicializáljuk a const char*-osban
 
-    /// C-sztringet ad vissza
-    /// @return pinter egy '\0'-val lezárt (C) sztringre
+    /**
+     * @brief C99 típusú string visszaadása
+     * 
+     * @return const char* 
+     */
     const char* c_str() const { return pData;}
     char* c_str() { return pData;}
 
-    /// Konstruktor egy size_t méretből
+    ///Konstruktor méretből
     String(size_t siz);
     
-    /// Konstruktor egy char karakterből
-    /// @param ch - karakter
+    /// Konstruktor karakterből
+    /// @param ch - karakter, amiből létrehozzuk a stringet.
     String(char ch);
 
-    /// Konstruktor egy nullával lezárt char sorozatból
-    /// Ez a deafault is!
-    /// @param p - pointer egy C sztringre
-    String(const char *p); // = ""
+    /**
+     * @brief Konstruktor egy C99 típusú stringből
+     * 
+     * Ez a default konstruktor is
+     * @param p - C99 típusú string
+     */
+    String(const char *p); // Ugyanaz, mint a "".
 
-    /// Másoló konstruktor
-    /// @param s1 - String, amiből létrehozzuk az új String-et
+    /**
+     * @brief Másoló konstruktor
+     * 
+     * @param s1 - String, amit másolunk.
+     */
     String(const String& s1);
 
-    /// Destruktor
+    ///Destruktor.
     virtual ~String() { delete[] pData; }
 
+    /**
+     * @brief Egyenlőség operátor
+     * 
+     * Megvizsgálja, hogy két String megegyezik-e.
+     * @param rhs - jobb oldali String objektum referenciája.
+     * @return true , ha megegyeznek.
+     * @return false , ha nem egyeznek meg.
+     */
     bool operator==(const String& rhs)const;
 
 
-    /// Kiírunk egy Stringet (debug célokra)
-    /// Előtte kiírunk egy tetszőleges szöveget.
-    /// @param txt - nullával lezárt szövegre mutató pointer
-    void printDbg(const char *txt = "") const {
-        std::cout << txt << "[" << len << "], "
-                  << (pData ? pData : "(NULL)") << std::endl;
-    }
-
-    /// Értékadó operátor.
-    /// @param rhs_s - jobboldali String
-    /// @return baoldali (módosított) string (referenciája)
+    /**
+     * @brief Értékadó operátor
+     * 
+     * @param rhs_s - A jobb oldali String objektum referenciája.
+     * @return String& A bal oldal módosított String referenciája.
+     */
     String& operator=(const String& rhs_s);
 
-    /// Két Stringet összefűz
-    /// @param rhs_s - jobboldali String
-    /// @return új String, ami tartalmazza a két stringet egymás után
+    /**
+     * @brief Két String objektumot összefűt
+     * 
+     * @param rhs_s - A jobb oldali string 
+     * @return String - Az új összefűzött, módosított String .
+     */
     String operator+(const String& rhs_s) const ;
 
-    /// Sztringhez karaktert összefűz
-    /// @param rhs_c - jobboldali karakter
-    /// @return új String, ami tartalmazza a sztringet és a karaktert egymás után
-    //String operator+(char rhs_c) const { return *this + String(rhs_c);}
-
-    /// A string egy megadott indexű elemének REFERENCIÁJÁVAL tér vissza.
-    /// @param idx - charakter indexe
-    /// @return karakter (referencia)
-    ///         Indexelési hiba esetén const char* kivételt dob.
-    char& operator[](unsigned int idx);
-
-    /// A string egy megadott indexű elemének REFERENCIÁJÁVAL tér vissza.
-    /// @param idx - karakter indexe
-    /// @return karakter (referencia)
-    ///         Indexelési hiba esetén const char* kivételt dob (assert helyett).
-    const char& operator[](unsigned int idx) const;
-
+    /**
+     * @brief Stream operator
+     * 
+     * @param os - output stream
+     * @param p - Kiírandó String
+     * @return std::ostream& - stream
+     */
     friend std::ostream& operator<<(std::ostream& os, String p);
 };
-
-/// Globális függvények:
-/// kiír az ostream-re
-/// @param os - ostream típusú objektum
-/// @param s0 - String, amit kiírunk
-/// @return os
-//std::ostream& operator<<(std::ostream& os, const String& s0);
-
-/// Beolvas az istream-ről egy szót egy string-be.
-/// @param is - istream típusú objektum
-/// @param s0 - String, amibe beolvas
-/// @return is
-//std::istream& operator>>(std::istream& is, String& s0){}
-
-/// Karakterhez sztringet fűz
-/// @param ch - karakter
-/// @param str - String
-/// @return új String, ami tartalmazza a karaktert és a sztringet egymás után
+/**
+ * @brief Karakterhez sztringet fűz
+ * 
+ * @param ch - lvalue
+ * @param str - rvalue
+ * @return String - Új, összefűzött Stringgel tér vissza.
+ */
 inline String operator+(char ch, const String& str) { return String(ch) + str; }
 
 #endif

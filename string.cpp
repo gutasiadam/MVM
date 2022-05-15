@@ -1,22 +1,23 @@
 /**
- *
- * \file string5.cpp
- *
+ * @file String.cpp
+ * @author Gutási Ádám
+ * @brief Tartalmazza a String osztály definícióit.
+ * @date 2022-05-15
+ * 
  */
-
 
 #include <iostream>
 #include <cstring>
-
-//#include "memtrace.h"           // include a standard headerek után
 #include "String.h"
 
+    ///Konstruktor méretből.
     String::String(size_t siz){
         len=siz;
         pData= new char[siz+1];
         pData[0]='\0';
     }
 
+    ///Konstruktor karakterből.
     String::String(char c){
         len=1;
         pData= new char[len+1];
@@ -24,28 +25,32 @@
         pData[1]='\0';
     }
 
+    ///Konstruktor C99 típusú stringből.
     String::String(const char* c){
         len=strlen(c);
         pData= new char[len+1];
         strcpy(pData,c);
     }
-/// Másoló konstruktor: String-ből készít (createString)
-String::String(const String& a){
-    len = a.len;
-    pData=0;
-    if(a.pData!=NULL){
-      pData = new char[len+1];
-      strcpy(pData, a.pData);
-  }
-        
-}
+    /**
+     * @brief Másoló konstruktor
+     * 
+     * @param s1 - String, amit másolunk.
+     */
+    String::String(const String& a){
+        len = a.len;
+        pData=0;
+        if(a.pData!=NULL){
+          pData = new char[len+1];
+          strcpy(pData, a.pData);
+        }
+      }
 
-/// Destruktor (disposeString)
-    /* String::~String(){
-        delete[] pData;
-    }*/
 
-/// operator=
+/**
+* @brief Értékadó operátor 
+* @param rhs_s - A jobb oldali String objektum referenciája.
+* @return String& A bal oldal módosított String referenciája.
+*/
 String& String::operator=(const String& a){
         if (this != &a) {
         delete[] pData;
@@ -56,6 +61,12 @@ String& String::operator=(const String& a){
     return *this;
     }
 
+/**
+* @brief Két String objektumot összefűt
+* 
+* @param rhs_s - A jobb oldali string 
+* @return String - Az új összefűzött, módosított String .
+*/
 String String::operator+(const String& rhs_s) const{
     String tmp(this->len+rhs_s.size());
     strcpy(tmp.pData,this->pData);
@@ -64,20 +75,27 @@ String String::operator+(const String& rhs_s) const{
 
     return tmp;
 }
-/// [] operátorok: egy megadott indexű elem REFERENCIÁJÁVAL térnek vissza (charAtString)
-/// indexhiba esetén const char * kivételt dob!
-
-
-/// + operátorok:
-///                 String-hez jobbról karaktert ad (addString)
-///                 String-hez String-et ad (addString)
-/// << operator, ami kiír az ostream-re
+/**
+ * @brief Stream operator
+ * 
+ * @param os - output stream
+ * @param p - Kiírandó String
+ * @return std::ostream& - stream
+ */
 std::ostream& operator<<(std::ostream& os, const String s){
     os << s.c_str();
     return os;
 }
 
+
+/**
+ * @brief Egyenlőség operátor
+ * 
+ * Megvizsgálja, hogy két String megegyezik-e.
+ * @param rhs - jobb oldali String objektum referenciája.
+ * @return true , ha megegyeznek.
+ * @return false , ha nem egyeznek meg.
+ */
 bool String::operator==(const String& rhs)const{
     return strcmp(this->pData,rhs.c_str());
 }
-

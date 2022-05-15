@@ -1,4 +1,4 @@
-/**
+/*
                                 ..       :                   ..       :
                                ,W,     .Et t      .DD.      ,W,     .Et
                               t##,    ,W#t EK:   ,WK.      t##,    ,W#t
@@ -16,15 +16,18 @@
 	Budapesti Műszaki és Gazdaságtudományi Egyetem
 	Programozás Alapjai II.
 	2022.
+*/
 
-	\file main.cpp
-
-	Ez a fájl a MVM projekt unit testje.
+/**
+ * @file main.cpp
+ * @author Gutási Ádám
+ * @brief 	Ez a fájl a MVM projekt unit testje.
   A tesztelés a gtest_lite könyvtárral történik.
 
   Szúrópróbaszerű adatellenőrzések történnek, tömbhosszak összevetése az elvárt eredményekkel, stb.
-
- * */
+ * @date 2022-05-15
+ * 
+ */
 
 #include <iostream>
 #include <stdexcept>
