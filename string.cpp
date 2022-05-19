@@ -97,5 +97,7 @@ std::ostream& operator<<(std::ostream& os, const String s){
  * @return false , ha nem egyeznek meg.
  */
 bool String::operator==(const String& rhs)const{
-    return strcmp(this->pData,rhs.c_str());
+    int back=strcmp(this->pData,rhs.c_str());
+    if(back==0){return true;}
+    return false;
 }

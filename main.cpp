@@ -112,7 +112,18 @@ int main() {
       EXPECT_TRUE(dummy_3.announcement.get_EM_val()==-1);
     }END
 
-    
+    TEST(AddressTest, AddressTest){
+      Address dummy_Address("Budapest","Almafa", 23);
+      Address dummy_Address_2("Budapest","Almafa", 23);
+      EXPECT_TRUE(strcmp(dummy_Address.getTown().c_str(),"Budapest")==0);
+      EXPECT_TRUE(strcmp(dummy_Address.getStreet().c_str(),"Almafa")==0);
+      EXPECT_EQ(23,dummy_Address.getHouse());
+      EXPECT_EQ(1,dummy_Address.getApartment());
+
+      //operator==
+      EXPECT_TRUE(dummy_Address==dummy_Address_2);
+    }END
+
     TEST(Tariff, Tariff_calc){
       //Tarifa számítási módjának tesztelése
       Date dummy_2_date_test(2020,12,4);
@@ -171,13 +182,19 @@ int main() {
       EXPECT_FALSE(initialClientsSize==sizeAfterAdd); // Ekkor tehát hozzáadás történt.
     }END
 
-    TEST (Array, exceptions){
+    TEST (ArrayTests, exceptions){
       EXPECT_ANY_THROW(Ctrl.getClient(32)); //std::out_of_range
       EXPECT_ANY_THROW(Ctrl.getClient(-1)); //std::out_of_range
     }END
 
-    
+    TEST (StringTests, constructorsAndBindOPerator){
+      String tstDummyString((size_t)10);
+      String tstDummyString_2('a');
+      String tstDummyString_3('a');
+      tstDummyString=tstDummyString+tstDummyString_2;
+      EXPECT_TRUE(strcmp("a",tstDummyString.c_str())==0);
+      EXPECT_TRUE(tstDummyString_2==tstDummyString_3);
+    }END
 
-  GTEND(std::cerr);       // Csak C(J)PORTA működéséhez kell
   return 0;
 }

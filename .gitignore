@@ -4,7 +4,7 @@ gtest_lite.h
 settings.json
 .vscode/settings.json
 .DS_Store
-Makefile
+*.zip
 2ajCN.gif
 *.o
 TST*
